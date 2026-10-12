@@ -1,0 +1,6 @@
+{
+  "name": "Morocco IT Job Monitoring Agent",
+  "description": "Autonomous Moroccan IT job monitoring agent with Hugging Face AI evaluation, Telegram notifications, and persistent state tracking.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

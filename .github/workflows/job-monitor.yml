@@ -1,0 +1,83 @@
+name: Morocco IT Job Monitoring Agent
+
+on:
+  schedule:
+    # Runs every 3 hours at minute 0 UTC
+    - cron: '0 */3 * * *'
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Run in dry-run mode (no notifications, no state write)'
+        required: false
+        type: boolean
+        default: false
+      use_demo:
+        description: 'Use built-in Moroccan fixtures instead of live web scrape'
+        required: false
+        type: boolean
+        default: false
+
+concurrency:
+  group: morocco-job-monitor
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  monitor:
+    name: Run Job Monitoring Agent
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run test suite
+        run: npm test
+
+      - name: Execute monitoring agent
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+          HF_MODEL: ${{ vars.HF_MODEL || 'Qwen/Qwen2.5-Coder-7B-Instruct' }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          FIRST_RUN_MAX_NOTIFICATIONS: 5
+          MAX_NOTIFICATIONS_PER_RUN: 10
+        run: |
+          ARGS=""
+          if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then
+            ARGS="$ARGS --dry-run"
+          fi
+          if [ "${{ github.event.inputs.use_demo }}" = "true" ]; then
+            ARGS="$ARGS --demo"
+          fi
+          npx tsx src/cli.ts $ARGS
+
+      - name: Commit and push updated state
+        if: github.event.inputs.dry_run != 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          if [ -f data/seen.json ]; then
+            git add data/seen.json
+            if ! git diff --staged --quiet; then
+              git commit -m "chore(state): update seen jobs state [skip ci]"
+              git pull --rebase origin main || git pull --rebase origin master || true
+              git push || echo "Push skipped or branch protected"
+            else
+              echo "No state changes to commit."
+            fi
+          fi
