@@ -95,6 +95,45 @@ describe('OpenRouterJudge Client & Error Handling', () => {
     expect(judge.getModelName()).toBe(DEFAULT_OPENROUTER_MODEL);
   });
 
+  it('strictly limits models fallback array to 3 items or fewer in the request payload', async () => {
+    let capturedBody: any;
+    const mockFetch = vi.fn().mockImplementation(async (_url, options) => {
+      capturedBody = JSON.parse(options.body as string);
+      return {
+        ok: true,
+        status: 200,
+        text: async () =>
+          JSON.stringify({
+            choices: [
+              {
+                message: {
+                  content: JSON.stringify({
+                    decision: 'match',
+                    confidence: 90,
+                    category: 'technicien_specialise',
+                    reasons: 'IT match',
+                    qualification_assessment: 'Bac+2',
+                    missing_information: 'None',
+                  }),
+                },
+              },
+            ],
+          }),
+      };
+    });
+
+    const judge = new OpenRouterJudge({
+      apiKey: 'sk-or-v1-testkey',
+      fetchFn: mockFetch as unknown as typeof fetch,
+    });
+
+    await judge.evaluateJob(mockJob);
+    expect(capturedBody).toBeDefined();
+    expect(Array.isArray(capturedBody.models)).toBe(true);
+    expect(capturedBody.models.length).toBeLessThanOrEqual(3);
+    expect(capturedBody.models[0]).toBe('openrouter/free');
+  });
+
   it('correctly handles response wrapped in markdown code fences', async () => {
     const mockFetch = vi.fn().mockResolvedValue({
       ok: true,

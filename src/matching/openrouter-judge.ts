@@ -198,6 +198,12 @@ Analyze this job and output ONLY the JSON decision:`;
           : candidateFallbackModels[attempt % candidateFallbackModels.length];
 
       try {
+        // OpenRouter strictly requires 'models' array to have 3 items or fewer.
+        const serverFallbackModels = [
+          currentModel,
+          ...candidateFallbackModels.filter((m) => m !== currentModel),
+        ].slice(0, 3);
+
         const res = await this.fetchFn('https://openrouter.ai/api/v1/chat/completions', {
           method: 'POST',
           headers: {
@@ -208,11 +214,7 @@ Analyze this job and output ONLY the JSON decision:`;
           },
           body: JSON.stringify({
             model: currentModel,
-            // Pass model fallback array for server-side automatic failover on OpenRouter
-            models: [
-              currentModel,
-              ...candidateFallbackModels.filter((m) => m !== currentModel),
-            ],
+            models: serverFallbackModels,
             messages: [
               { role: 'system', content: systemPrompt },
               { role: 'user', content: userPrompt },
