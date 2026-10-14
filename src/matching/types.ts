@@ -43,6 +43,7 @@ export interface ScrapedJob {
   location: string;
   url: string;
   deadline?: string;
+  specialite?: string;
   description: string;
   publishedDate?: string;
   rawText?: string;

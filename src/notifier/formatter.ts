@@ -39,6 +39,10 @@ export function formatTelegramMessage(
     `📜 <b>Qualification:</b> ${escapeHtml(evalResult.qualification_assessment)}`,
   ];
 
+  if (job.specialite) {
+    lines.push(`🎯 <b>Spécialité:</b> ${escapeHtml(job.specialite)}`);
+  }
+
   if (job.deadline) {
     lines.push(`⏰ <b>Deadline:</b> ${escapeHtml(job.deadline)}`);
   }

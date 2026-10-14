@@ -8,6 +8,7 @@ import { StateManager } from './state/state-manager.ts';
 
 export interface MonitorOptions {
   dryRun?: boolean;
+  forceNotify?: boolean;
   useDemoFixtures?: boolean;
   customTargetUrl?: string;
   stateFilePath?: string;
@@ -39,9 +40,11 @@ export class JobMonitoringAgent {
   private readonly judge?: AiJudge;
   private readonly notifier: TelegramNotifier;
   private readonly dryRun: boolean;
+  private readonly forceNotify: boolean;
 
   constructor(options: MonitorOptions = {}) {
     this.dryRun = options.dryRun ?? false;
+    this.forceNotify = options.forceNotify ?? false;
 
     this.stateManager =
       options.stateManager ||
@@ -95,6 +98,12 @@ export class JobMonitoringAgent {
 
     console.log(`[Agent] Starting Morocco IT Job Monitoring run (DryRun: ${this.dryRun})...`);
 
+    if (!this.notifier.isConfigured() && !this.dryRun) {
+      console.warn(
+        '[Agent] NOTICE: Telegram notifications are disabled (TELEGRAM_BOT_TOKEN or TELEGRAM_CHAT_ID is missing from .env).'
+      );
+    }
+
     // 1. Fetch raw jobs from portal
     let rawJobs: ScrapedJob[] = [];
     try {
@@ -125,22 +134,27 @@ export class JobMonitoringAgent {
       // Record discovery
       this.stateManager.recordJobDiscovered(job, false);
 
-      // Fetch full details if needed so the complete syllabus and grade are available
+      // Fetch full details if needed so the complete syllabus, specialty, and deadline are available
       try {
         const enrichedJob = await this.scraper.fetchJobDetails(job);
         job.description = enrichedJob.description;
+        job.specialite = enrichedJob.specialite || job.specialite;
+        job.deadline = enrichedJob.deadline || job.deadline;
         this.stateManager.recordJobDiscovered(job, true);
       } catch (detailErr) {
         console.warn(`[Agent] Could not retrieve full details for ${job.id}: ${(detailErr as Error).message}`);
         summary.errors.push(`Detail fetch failed for ${job.id}`);
       }
 
-      // Check loose prefilter against title + description + employer
+      // Check prefilter: deadline validity, specialite keywords ("informatique" / "technique de developpement informatique")
       const prefilterResult = prefilterJob(job);
       this.stateManager.recordPrefilterResult(job.id, prefilterResult.passed);
 
       if (!prefilterResult.passed) {
         summary.prefilteredOut++;
+        console.log(
+          `[Agent] Excluded: ${job.title.slice(0, 50)}... (${prefilterResult.reason})`
+        );
         continue;
       }
 
@@ -209,7 +223,10 @@ export class JobMonitoringAgent {
         // 4. Notifications for evaluated matches/maybes
         if (evaluation.decision === 'match' || evaluation.decision === 'maybe') {
           const alreadyNotified = this.stateManager.hasBeenNotified(job.id);
-          if (alreadyNotified) {
+          if (alreadyNotified && !this.forceNotify) {
+            console.log(
+              `[Agent] Opportunity already notified previously: [${evaluation.decision.toUpperCase()}] ${job.title.slice(0, 45)}... (skipping duplicate Telegram alert)`
+            );
             continue;
           }
 

@@ -192,6 +192,22 @@ export class StateManager {
     fs.renameSync(tempPath, this.stateFilePath);
   }
 
+  /**
+   * Resets the notified status for all jobs so they can be re-notified if requested.
+   */
+  public resetNotifiedStatus(): number {
+    let count = 0;
+    for (const record of Object.values(this.state.jobs)) {
+      if (record.notified) {
+        record.notified = false;
+        record.notifiedAt = undefined;
+        record.lastUpdatedAt = new Date().toISOString();
+        count++;
+      }
+    }
+    return count;
+  }
+
   public getAllRecords(): Record<string, SeenJobRecord> {
     return { ...this.state.jobs };
   }

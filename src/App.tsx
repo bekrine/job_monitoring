@@ -563,10 +563,13 @@ export default function App() {
             </div>
 
             <div className="bg-slate-950 border border-slate-800 rounded-xl p-5 space-y-2">
-              <h4 className="text-xs font-bold text-rose-400 uppercase tracking-wider">Reject Criteria</h4>
-              <p className="text-xs text-slate-400 leading-relaxed">
-                Strictly reject non-IT postings: Medical/Healthcare, Nursing, Civil Engineering (Génie Civil), Mechanical/BTP, Logistics/Drivers, Agriculture, Legal, General Accounting. Reject postings located outside Morocco unless explicitly remote for Moroccan candidates.
-              </p>
+              <h4 className="text-xs font-bold text-rose-400 uppercase tracking-wider">Mandatory Filters & Reject Criteria</h4>
+              <ul className="text-xs text-slate-300 space-y-1.5 list-disc list-inside">
+                <li><strong className="text-rose-300">Délai de dépôt des candidatures:</strong> Strict deadline filtering ensures only active candidatures are processed. Any contest whose deadline has passed the current date, or which is already publishing convocations (لائحة المدعوين) or results (لائحة الناجحين), is immediately filtered out.</li>
+                <li><strong className="text-rose-300">Spécialité:</strong> The job or contest specialty must explicitly contain "informatique" or "technique de développement informatique" (or official Arabic equivalents: المعلوميات, تقنيات تطوير المعلوميات).</li>
+                <li><strong className="text-slate-400">Non-IT Occupations:</strong> Healthcare/Nursing, Civil Engineering (Génie Civil), Mechanical/BTP, Logistics/Drivers, Agriculture, Legal, General Accounting.</li>
+                <li><strong className="text-slate-400">Location:</strong> Postings outside Morocco (unless fully remote for Moroccan candidates).</li>
+              </ul>
             </div>
           </div>
         )}

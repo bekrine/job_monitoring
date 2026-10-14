@@ -1,5 +1,7 @@
 import * as dotenv from 'dotenv';
 import { JobMonitoringAgent } from './monitor.ts';
+import { TelegramNotifier } from './notifier/telegram.ts';
+import { StateManager } from './state/state-manager.ts';
 import {
   DEFAULT_OPENROUTER_MODEL,
   verifyOpenRouterModel,
@@ -24,6 +26,9 @@ Usage:
 
 Flags:
   --dry-run                   Simulate decisions and notifications without side effects
+  --force-notify              Send notifications even if the job was previously marked as notified
+  --test-telegram             Send a test message to verify Telegram bot token and chat ID
+  --reset-notified            Reset notified status on all seen jobs to re-trigger notifications
   --demo                      Use built-in Moroccan IT announcements (no live web scrape)
   --target <url>              Custom recruitment portal or RSS feed URL
   --model <modelId>           Override AI model identifier (e.g. openrouter/free, google/gemma-4-31b-it:free)
@@ -82,19 +87,54 @@ Environment Variables:
     }
   }
 
+  let stateFilePath: string | undefined;
+  const stateIdx = args.indexOf('--state');
+  if (stateIdx !== -1 && args[stateIdx + 1]) {
+    stateFilePath = args[stateIdx + 1];
+  }
+
+  // Handle --test-telegram
+  if (args.includes('--test-telegram')) {
+    console.log('Sending test message to Telegram...');
+    const notifier = new TelegramNotifier();
+    if (!notifier.isConfigured()) {
+      console.error('[FAIL] Telegram is not configured.');
+      console.error('Please check that TELEGRAM_BOT_TOKEN and TELEGRAM_CHAT_ID are set in your .env file:');
+      console.error('  TELEGRAM_BOT_TOKEN=<your_bot_token>');
+      console.error('  TELEGRAM_CHAT_ID=<your_chat_id>');
+      process.exit(1);
+    }
+    const testResult = await notifier.sendMessage(
+      '🔔 <b>Morocco IT Job Monitoring Agent</b>: Test message! Your Telegram bot configuration is working properly.'
+    );
+    if (testResult.success) {
+      console.log(`[PASS] Test message sent successfully to Telegram! (Message ID: ${testResult.messageId})`);
+      process.exit(0);
+    } else {
+      console.error(`[FAIL] Telegram send failed: ${testResult.error}`);
+      process.exit(1);
+    }
+  }
+
+  // Handle --reset-notified
+  if (args.includes('--reset-notified')) {
+    const sm = new StateManager({ stateFilePath });
+    const resetCount = sm.resetNotifiedStatus();
+    sm.save();
+    console.log(
+      `[PASS] Reset notification status for ${resetCount} job postings in ${stateFilePath || 'data/seen.json'}. Next run will re-notify matching opportunities.`
+    );
+    process.exit(0);
+  }
+
   const dryRun = args.includes('--dry-run');
+  const forceNotify = args.includes('--force-notify');
   const demo = args.includes('--demo');
 
   let customTargetUrl: string | undefined;
   const targetIdx = args.indexOf('--target');
   if (targetIdx !== -1 && args[targetIdx + 1]) {
     customTargetUrl = args[targetIdx + 1];
-  }
-
-  let stateFilePath: string | undefined;
-  const stateIdx = args.indexOf('--state');
-  if (stateIdx !== -1 && args[stateIdx + 1]) {
-    stateFilePath = args[stateIdx + 1];
   }
 
   let customModel: string | undefined;
@@ -125,6 +165,7 @@ Environment Variables:
 
   const agent = new JobMonitoringAgent({
     dryRun,
+    forceNotify,
     useDemoFixtures: demo,
     customTargetUrl,
     stateFilePath,

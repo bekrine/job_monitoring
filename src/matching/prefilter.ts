@@ -1,4 +1,6 @@
 import { ScrapedJob } from './types.ts';
+import { isCandidatureClosed } from './deadline-filter.ts';
+import { evaluateJobSpecialite } from './specialite-filter.ts';
 
 // Standard multi-character IT positive keywords in French, Arabic, and English
 const IT_POSITIVE_KEYWORDS = [
@@ -135,9 +137,34 @@ function hasItMatch(text: string): boolean {
 }
 
 /**
- * Evaluates whether a scraped job announcement passes the loose keyword prefilter.
+ * Evaluates whether a scraped job announcement passes the prefilter:
+ * 1. Délai de dépôt des candidatures: Deadline must not have passed the current date.
+ * 2. Spécialité: Must contain "informatique" or "technique de développement informatique" (or Moroccan Arabic equivalents).
+ * 3. Title/occupation exclusions and IT keywords check.
  */
-export function prefilterJob(job: ScrapedJob): PrefilterResult {
+export function prefilterJob(
+  job: ScrapedJob,
+  referenceDate: Date = new Date()
+): PrefilterResult {
+  // 1. Deadline & candidature closure check (Délai de dépôt des candidatures)
+  const closureCheck = isCandidatureClosed(job, referenceDate);
+  if (closureCheck.isClosed) {
+    return {
+      passed: false,
+      reason: `Prefilter: Candidature fermée - ${closureCheck.reason}`,
+    };
+  }
+
+  // 2. Spécialité filter check
+  const specialiteCheck = evaluateJobSpecialite(job);
+  if (!specialiteCheck.matches) {
+    return {
+      passed: false,
+      reason: `Prefilter: Spécialité non conforme (doit contenir "informatique" ou "technique de développement informatique")`,
+    };
+  }
+
+  // 3. Excluded non-IT occupations check
   const combined = `${job.title} ${job.description} ${job.employer}`;
   const titleNorm = normalizeText(job.title);
 
@@ -163,7 +190,7 @@ export function prefilterJob(job: ScrapedJob): PrefilterResult {
 
   return {
     passed: true,
-    reason: 'Prefilter: Matched IT domain keywords',
+    reason: `Prefilter: Spécialité validée (${specialiteCheck.matchedKeyword}) et délai ouvert`,
   };
 }
 

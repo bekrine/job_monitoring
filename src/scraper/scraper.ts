@@ -20,6 +20,7 @@ export const SAMPLE_MOROCCO_JOBS: ScrapedJob[] = [
     location: 'Rabat, Maroc',
     url: 'https://www.emploi-public.ma/ar/concours/tech-3eme-grade-informatique-2026',
     deadline: '25 Octobre 2026',
+    specialite: 'Informatique, Développement Web, Réseaux et Systèmes',
     description: `
 Concours de recrutement de Techniciens de 3ème grade (Échelle 9).
 Spécialité : Informatique, Développement Web, Réseaux et Systèmes.
@@ -38,6 +39,7 @@ Nombre de postes : 8 postes.
     location: 'Rabat / Casablanca, Maroc',
     url: 'https://www.emploi-public.ma/ar/concours/ingenieur-etat-cloud-2026',
     deadline: '30 Octobre 2026',
+    specialite: 'Génie Logiciel, Cloud Architecture, Informatique',
     description: `
 Concours pour le recrutement d'un Ingénieur d'État 1er grade (Échelle 11).
 Spécialité : Génie Logiciel, Cloud Architecture, DevOps.
@@ -53,6 +55,7 @@ Expérience : Ouvert aux jeunes diplômés et profils expérimentés.
     location: 'Casablanca (Nearshore), Maroc',
     url: 'https://www.rekrute.com/offre-emploi-fullstack-casablanca-99881.html',
     deadline: '15 Novembre 2026',
+    specialite: 'Techniques de développement informatique (Fullstack)',
     description: `
 Nous recrutons pour notre centre de développement à Casablanca un Développeur Fullstack (Node.js & React/TypeScript).
 Niveau d'études : Bac+2 (DTS / DUT) avec 2 ans d'expérience ou Bac+5 (Ingénieur/Master).
@@ -67,6 +70,7 @@ Type de contrat : CDI, télétravail hybride.
     location: 'Marrakech, Maroc',
     url: 'https://www.emploi-public.ma/ar/concours/infirmier-sante-2026',
     deadline: '20 Octobre 2026',
+    specialite: 'التخدير والإنعاش (Anesthésie-Réanimation)',
     description: `
 Concours de recrutement d'infirmiers de 1er grade.
 Diplôme requis : Diplôme d'État Infirmier en Anesthésie-Réanimation délivré par les ISPITS.
@@ -80,10 +84,24 @@ Missions hospitalières dans les services de réanimation.
     location: 'Tanger, Maroc',
     url: 'https://www.emploi-public.ma/ar/concours/administrateur-tanger-2026',
     deadline: '28 Octobre 2026',
+    specialite: 'إدارة عامة وتدبير المشاريع',
     description: `
 Recrutement d'un administrateur 3ème grade (Échelle 10).
 Diplôme requis : Licence en sciences économiques ou gestion.
 Missions : Gestion administrative générale, suivi des marchés publics, numérisation des procédures communales et archivage électronique.
+    `.trim(),
+  },
+  {
+    id: 'sample-expired-concours-06',
+    title: 'لائحة المدعوين لاجتياز مباراة توظيف مهندس دولة من الدرجة الأولى - تخصص المعلوميات',
+    employer: 'وزارة التربية الوطنية والتعليم الأولي والرياضة',
+    location: 'Rabat, Maroc',
+    url: 'https://www.emploi-public.ma/ar/details/expired-ingenieur-it',
+    deadline: '5 Octobre 2026 - 16:30',
+    specialite: 'المعلوميات (Informatique)',
+    description: `
+لائحة المدعوين لاجتياز الاختبار الكتابي لمباراة توظيف مهندس دولة من الدرجة الأولى تخصص المعلوميات.
+آخر أجل لإيداع ملفات الترشيح كان هو: 5 أكتوبر 2026.
     `.trim(),
   },
 ];

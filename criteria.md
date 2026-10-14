@@ -58,6 +58,8 @@ Evaluate job postings and competitive recruitment notices (concours) in Morocco 
    - Requires human confirmation before dismissing or applying.
 
 3. **REJECT**:
+   - **Deadline Passed (Délai de dépôt dépassé):** Any job announcement whose application deadline has already passed the current date, or which is already in a post-submission stage (convocation lists "لائحة المدعوين", exam results "لائحة الناجحين").
+   - **Non-Matching Spécialité:** Any position whose specialization (Spécialité / تخصص) does NOT contain "informatique" or "technique de développement informatique" (or Moroccan Arabic equivalents such as المعلوميات or تقنيات تطوير المعلوميات).
    - Strictly non-IT occupations: Healthcare, Nursing, Civil Engineering (Génie Civil), Mechanical Engineering, Architecture/BTP, Logistics/Drivers, Agriculture, Legal, General Accounting, Administrative Assistants without IT duties.
    - Non-Moroccan locations (unless fully remote for Moroccan residents).
    - Duplicates, spam, or expired announcements.

@@ -64,10 +64,19 @@ export class EmploiPublicScraper implements ScraperSource {
         let employer = 'Administration Publique Marocaine';
         let deadline = '';
 
-        // Try extracting deadline (e.g. "آخر أجل : ...")
-        const deadlineMatch = containerText.match(/آخر أجل[^:]*:\s*([^–\n\r]+)/i);
+        // Try extracting deadline (e.g. "آخر أجل لإيداع الترشيحات : ...")
+        const deadlineMatch = containerText.match(
+          /(?:آخر أجل لإيداع الترشيحات|آخر أجل لإيداع ملفات الترشيح|آخر أجل|Délai de dépôt des candidatures|Date limite de dépôt)\s*[:]?\s*([0-9]{1,2}\s+[^\s\n\r–-]+(?:\s+[0-9]{4})?(?:\s*-\s*[0-9]{1,2}:[0-9]{2})?|[0-9]{1,2}[\/-][0-9]{1,2}[\/-][0-9]{4})/i
+        );
         if (deadlineMatch && deadlineMatch[1]) {
           deadline = deadlineMatch[1].trim();
+        }
+
+        // Try extracting specialite from container text
+        let specialite: string | undefined;
+        const specMatch = containerText.match(/(?:تخصص|التخصص|Spécialité|Spécialités)\s*:\s*([^–\n\r|;]+)/i);
+        if (specMatch && specMatch[1]) {
+          specialite = specMatch[1].trim();
         }
 
         // Try extracting employer from text after title or dash
@@ -87,6 +96,7 @@ export class EmploiPublicScraper implements ScraperSource {
             location: 'Maroc',
             url: fullUrl,
             deadline: deadline || undefined,
+            specialite,
             description: containerText || title,
             rawText: containerText,
           });
@@ -113,6 +123,44 @@ export class EmploiPublicScraper implements ScraperSource {
       const html = await response.text();
       const $ = cheerio.load(html);
 
+      // Extract accurate deadline and specialite from structured elements
+      let detectedSpecialite = job.specialite;
+      let detectedDeadline = job.deadline;
+
+      $('*').each((_, el) => {
+        const direct = $(el).clone().children().remove().end().text().trim();
+        if (
+          direct.includes('تخصص :') ||
+          direct.includes('التخصص :') ||
+          direct.includes('Spécialité :') ||
+          direct.includes('Spécialités :')
+        ) {
+          const parentText = $(el).parent().text().replace(/\s+/g, ' ').trim();
+          const m = parentText.match(
+            /(?:تخصص|التخصص|Spécialité|Spécialités)\s*:\s*([^.\r\n]+?)(?=\s*(?:الدرجة|عدد المناصب|نوع التوظيف|Diplôme|Niveau|$))/i
+          );
+          if (m && m[1]) {
+            detectedSpecialite = m[1].trim();
+          } else {
+            const cleaned = parentText.replace(/(?:تخصص|التخصص|Spécialité|Spécialités)\s*:/i, '').trim();
+            if (cleaned) detectedSpecialite = cleaned;
+          }
+        }
+        if (
+          direct.includes('آخر أجل لإيداع الترشيحات') ||
+          direct.includes('آخر أجل لإيداع ملفات الترشيح') ||
+          direct.includes('Délai de dépôt')
+        ) {
+          const parentText = $(el).parent().text().replace(/\s+/g, ' ').trim();
+          const dm = parentText.match(
+            /(?:آخر أجل لإيداع الترشيحات|آخر أجل لإيداع ملفات الترشيح|آخر أجل|Délai de dépôt des candidatures|Date limite de dépôt)\s*[:]?\s*([0-9]{1,2}\s+[^\s\n\r–-]+(?:\s+[0-9]{4})?(?:\s*-\s*[0-9]{1,2}:[0-9]{2})?|[0-9]{1,2}[\/-][0-9]{1,2}[\/-][0-9]{4})/i
+          );
+          if (dm && dm[1]) {
+            detectedDeadline = dm[1].trim();
+          }
+        }
+      });
+
       // Remove script/style tags
       $('script, style, noscript, iframe').remove();
 
@@ -123,6 +171,8 @@ export class EmploiPublicScraper implements ScraperSource {
 
       return {
         ...job,
+        deadline: detectedDeadline || job.deadline,
+        specialite: detectedSpecialite || job.specialite,
         description: mainContent.slice(0, 4000),
       };
     } catch (err) {
