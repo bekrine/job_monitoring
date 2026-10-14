@@ -29,25 +29,38 @@ export interface HuggingFaceJudgeConfig {
 export const DEFAULT_HF_MODEL = DEFAULT_VERIFIED_HF_MODEL;
 
 /**
- * Extracts raw JSON from potential markdown wrappers or surrounding explanation text.
+ * Extracts raw JSON from potential markdown wrappers, thinking blocks, or surrounding explanation text.
  */
 export function extractJsonFromText(rawText: string): string {
-  const trimmed = rawText.trim();
+  let cleaned = rawText.trim();
+
+  // Strip <think> ... </think> reasoning blocks if present
+  const withoutThinking = cleaned.replace(/<think>[\s\S]*?<\/think>/gi, '').trim();
+  if (withoutThinking.includes('{')) {
+    cleaned = withoutThinking;
+  }
 
   // Try extracting from ```json ... ``` or ``` ... ``` code blocks
-  const codeBlockMatch = trimmed.match(/```(?:json)?\s*([\s\S]*?)\s*```/i);
+  const codeBlockMatch = cleaned.match(/```(?:json)?\s*([\s\S]*?)\s*```/i);
   if (codeBlockMatch && codeBlockMatch[1]) {
     return codeBlockMatch[1].trim();
   }
 
   // Find outermost curly braces
-  const firstBrace = trimmed.indexOf('{');
-  const lastBrace = trimmed.lastIndexOf('}');
+  const firstBrace = cleaned.indexOf('{');
+  const lastBrace = cleaned.lastIndexOf('}');
   if (firstBrace !== -1 && lastBrace !== -1 && lastBrace > firstBrace) {
-    return trimmed.substring(firstBrace, lastBrace + 1).trim();
+    return cleaned.substring(firstBrace, lastBrace + 1).trim();
   }
 
-  return trimmed;
+  // Fallback to original text if stripping removed valid braces
+  const origFirst = rawText.indexOf('{');
+  const origLast = rawText.lastIndexOf('}');
+  if (origFirst !== -1 && origLast !== -1 && origLast > origFirst) {
+    return rawText.substring(origFirst, origLast + 1).trim();
+  }
+
+  return cleaned;
 }
 
 export class HuggingFaceJudge implements AiJudge {

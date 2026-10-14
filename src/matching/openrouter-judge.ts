@@ -2,6 +2,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import {
   DEFAULT_OPENROUTER_MODEL,
+  VERIFIED_OPENROUTER_FREE_MODELS,
   redactSensitiveData,
 } from './model-verifier.ts';
 import {
@@ -25,6 +26,51 @@ export interface OpenRouterJudgeConfig {
   fetchFn?: typeof fetch;
   siteUrl?: string;
   siteName?: string;
+}
+
+/**
+ * Robustly extracts the generated text or reasoning content from an OpenRouter choice object.
+ * Handles:
+ * - standard string content (`choice.message.content`)
+ * - multimodal/chunked array format (`[{ type: 'text', text: '...' }]`)
+ * - reasoning models (`choice.message.reasoning` or `choice.message.thinking`)
+ * - legacy completion format (`choice.text`)
+ */
+export function extractContentFromOpenRouterChoice(choice: any): string {
+  if (!choice) return '';
+
+  // 1. Direct message.content string
+  if (typeof choice.message?.content === 'string' && choice.message.content.trim()) {
+    return choice.message.content.trim();
+  }
+
+  // 2. Multimodal / array content parts (OpenAI / OpenRouter format)
+  if (Array.isArray(choice.message?.content)) {
+    const combined = choice.message.content
+      .map((part: any) => {
+        if (typeof part === 'string') return part;
+        if (part && typeof part.text === 'string') return part.text;
+        return '';
+      })
+      .join('')
+      .trim();
+    if (combined) return combined;
+  }
+
+  // 3. Reasoning / thinking fields (reasoning models on OpenRouter put thoughts or response in reasoning)
+  if (typeof choice.message?.reasoning === 'string' && choice.message.reasoning.trim()) {
+    return choice.message.reasoning.trim();
+  }
+  if (typeof choice.message?.thinking === 'string' && choice.message.thinking.trim()) {
+    return choice.message.thinking.trim();
+  }
+
+  // 4. Fallback legacy / raw completion field choice.text
+  if (typeof choice.text === 'string' && choice.text.trim()) {
+    return choice.text.trim();
+  }
+
+  return '';
 }
 
 export class OpenRouterJudge implements AiJudge {
@@ -57,7 +103,8 @@ export class OpenRouterJudge implements AiJudge {
     this.model = config.model || process.env.OPENROUTER_MODEL || DEFAULT_OPENROUTER_MODEL;
     this.maxRetries = config.maxRetries ?? 3;
     this.initialBackoffMs = config.initialBackoffMs ?? 1000;
-    this.maxTokens = config.maxTokens ?? 500;
+    // Default to 2000 tokens to ensure reasoning models have room for reasoning + full JSON output
+    this.maxTokens = config.maxTokens ?? 2000;
     this.temperature = config.temperature ?? 0.1;
     this.fetchFn = config.fetchFn || fetch;
     this.siteUrl = config.siteUrl || 'https://github.com/mohamedbekrine/job_monitoring';
@@ -93,7 +140,8 @@ Confidence: conservative integer heuristic 0-100.
 
   /**
    * Evaluates a scraped job against the criteria using OpenRouter's free model.
-   * Handles exponential backoff retries, rate limits, quota limits, and Zod validation.
+   * Handles exponential backoff retries, rate limits, quota limits, empty response recovery,
+   * model rotation across verified free alternatives, and Zod validation.
    */
   public async evaluateJob(job: ScrapedJob): Promise<JudgeEvaluation> {
     const systemPrompt = `You are an expert AI evaluator for Moroccan IT job openings and public sector competitive recruitment notices (concours).
@@ -132,8 +180,23 @@ ${job.description.slice(0, 3000)}
 
 Analyze this job and output ONLY the JSON decision:`;
 
+    // Candidate fallback models for rotation on failure
+    const candidateFallbackModels = [
+      this.model,
+      'google/gemma-4-31b-it:free',
+      'nvidia/nemotron-3.5-lightning:free',
+      'google/gemma-4-26b-a4b-it:free',
+      'cohere/north-mini-code:free',
+    ].filter((m, idx, arr) => arr.indexOf(m) === idx);
+
     let attempt = 0;
     while (attempt <= this.maxRetries) {
+      // Pick model for this attempt (uses primary on attempt 0, rotates on retries)
+      const currentModel =
+        attempt === 0
+          ? this.model
+          : candidateFallbackModels[attempt % candidateFallbackModels.length];
+
       try {
         const res = await this.fetchFn('https://openrouter.ai/api/v1/chat/completions', {
           method: 'POST',
@@ -144,7 +207,12 @@ Analyze this job and output ONLY the JSON decision:`;
             'X-Title': this.siteName,
           },
           body: JSON.stringify({
-            model: this.model,
+            model: currentModel,
+            // Pass model fallback array for server-side automatic failover on OpenRouter
+            models: [
+              currentModel,
+              ...candidateFallbackModels.filter((m) => m !== currentModel),
+            ],
             messages: [
               { role: 'system', content: systemPrompt },
               { role: 'user', content: userPrompt },
@@ -164,24 +232,31 @@ Analyze this job and output ONLY the JSON decision:`;
         }
 
         if (!res.ok) {
-          throw this.categorizeHttpError(status, parsedBody);
+          throw this.categorizeHttpError(status, parsedBody, currentModel);
         }
 
-        const rawContent = parsedBody?.choices?.[0]?.message?.content;
-        if (!rawContent || typeof rawContent !== 'string') {
+        const rawContent = extractContentFromOpenRouterChoice(parsedBody?.choices?.[0]);
+        if (!rawContent || !rawContent.trim()) {
+          const finishReason = parsedBody?.choices?.[0]?.finish_reason || 'unknown';
+          const isRetryable = attempt < this.maxRetries;
           throw new JudgeError(
             'INVALID_RESPONSE',
-            'OpenRouter model returned empty or non-string response content.',
-            { model: this.model, statusCode: status, providerResponse: parsedBody, isRetryable: false }
+            `OpenRouter model '${currentModel}' returned empty or non-string response content (finish_reason: ${finishReason}).`,
+            {
+              model: currentModel,
+              statusCode: status,
+              providerResponse: parsedBody,
+              isRetryable,
+            }
           );
         }
 
-        return this.parseAndValidate(rawContent);
+        return this.parseAndValidate(rawContent, attempt < this.maxRetries, currentModel);
       } catch (err: unknown) {
-        const parsedError = this.categorizeError(err);
+        const parsedError = this.categorizeError(err, currentModel);
 
         // Log rich sanitized diagnostic details
-        this.logDiagnostics(parsedError, attempt);
+        this.logDiagnostics(parsedError, attempt, currentModel);
 
         // Non-retryable errors or max retries reached: throw immediately
         if (!parsedError.isRetryable || attempt >= this.maxRetries) {
@@ -203,13 +278,13 @@ Analyze this job and output ONLY the JSON decision:`;
     );
   }
 
-  private logDiagnostics(error: JudgeError, attempt: number): void {
+  private logDiagnostics(error: JudgeError, attempt: number, activeModel?: string): void {
     const statusLabel = error.statusCode ? `HTTP ${error.statusCode}` : 'HTTP [None]';
     const requestIdLabel = error.requestId ? `(ReqID: ${error.requestId})` : '';
 
     console.error(
       `[OpenRouterJudge] Inference Failure [Attempt ${attempt + 1}/${this.maxRetries + 1}] | ${error.type} | ${statusLabel} ${requestIdLabel}\n` +
-      `  - Model: ${error.model || this.model}\n` +
+      `  - Model: ${error.model || activeModel || this.model}\n` +
       `  - Message: ${redactSensitiveData(error.message)}\n` +
       `  - Retryable: ${error.isRetryable ? 'YES' : 'NO'}`
     );
@@ -221,7 +296,7 @@ Analyze this job and output ONLY the JSON decision:`;
     }
   }
 
-  private categorizeHttpError(status: number, body: any): JudgeError {
+  private categorizeHttpError(status: number, body: any, activeModel?: string): JudgeError {
     let message = '';
     if (typeof body === 'string') {
       message = body;
@@ -232,9 +307,10 @@ Analyze this job and output ONLY the JSON decision:`;
         (typeof body.error === 'string' ? body.error : JSON.stringify(body));
     }
 
+    const targetModel = activeModel || this.model;
     const context: JudgeErrorContext = {
       statusCode: status,
-      model: this.model,
+      model: targetModel,
       providerResponse: body,
       requestUrl: 'https://openrouter.ai/api/v1/chat/completions',
     };
@@ -250,11 +326,15 @@ Analyze this job and output ONLY the JSON decision:`;
       );
     }
 
-    // 2. Auth failure
-    if (status === 401 || status === 403 || /unauthorized|api key|forbidden/i.test(combined)) {
+    // 2. Authentication Failure
+    if (
+      status === 401 ||
+      status === 403 ||
+      /unauthorized|invalid api key|forbidden|user not found|missing authentication/i.test(combined)
+    ) {
       return new JudgeError(
         'AUTH_FAILURE',
-        `OpenRouter authentication failed (HTTP ${status}). Check OPENROUTER_API_KEY: ${message}`,
+        `OpenRouter authentication failed (HTTP ${status}): ${message}. Check OPENROUTER_API_KEY.`,
         { ...context, isRetryable: false }
       );
     }
@@ -272,7 +352,7 @@ Analyze this job and output ONLY the JSON decision:`;
     if (status === 404 || /not found|no such model|model not available/i.test(combined)) {
       return new JudgeError(
         'INVALID_MODEL',
-        `Model '${this.model}' is not available on OpenRouter (HTTP ${status}): ${message}. Consider using '${DEFAULT_OPENROUTER_MODEL}'.`,
+        `Model '${targetModel}' is not available on OpenRouter (HTTP ${status}): ${message}. Consider using '${DEFAULT_OPENROUTER_MODEL}'.`,
         { ...context, isRetryable: false }
       );
     }
@@ -281,13 +361,18 @@ Analyze this job and output ONLY the JSON decision:`;
     if (status === 400 || status === 422) {
       return new JudgeError(
         'UNSUPPORTED_TASK',
-        `OpenRouter bad request for model '${this.model}' (HTTP ${status}): ${message}`,
+        `OpenRouter bad request for model '${targetModel}' (HTTP ${status}): ${message}`,
         { ...context, isRetryable: false }
       );
     }
 
     // 6. Upstream provider unavailable
-    if (status === 502 || status === 503 || status === 504 || /busy|loading|timeout|unavailable/i.test(combined)) {
+    if (
+      status === 502 ||
+      status === 503 ||
+      status === 504 ||
+      /busy|loading|timeout|unavailable/i.test(combined)
+    ) {
       return new JudgeError(
         'PROVIDER_UNAVAILABLE',
         `OpenRouter provider temporarily unavailable (HTTP ${status}): ${message}`,
@@ -311,35 +396,40 @@ Analyze this job and output ONLY the JSON decision:`;
     );
   }
 
-  public categorizeError(err: unknown): JudgeError {
+  public categorizeError(err: unknown, activeModel?: string): JudgeError {
     if (err instanceof JudgeError) {
       return err;
     }
 
+    const targetModel = activeModel || this.model;
     const anyErr = err as Record<string, any>;
     const rawMessage = anyErr?.message || String(err);
     const status = anyErr?.statusCode || anyErr?.status;
 
     if (status) {
-      return this.categorizeHttpError(status, anyErr?.providerResponse || rawMessage);
+      return this.categorizeHttpError(status, anyErr?.providerResponse || rawMessage, targetModel);
     }
 
     if (/econnreset|etimedout|network|fetch failed|socket hang up/i.test(rawMessage)) {
       return new JudgeError(
         'NETWORK_ERROR',
         `Network error communicating with OpenRouter: ${rawMessage}`,
-        { model: this.model, isRetryable: true }
+        { model: targetModel, isRetryable: true }
       );
     }
 
     return new JudgeError(
       'UNKNOWN',
       `Unexpected error during OpenRouter inference: ${rawMessage}`,
-      { model: this.model, isRetryable: false }
+      { model: targetModel, isRetryable: false }
     );
   }
 
-  public parseAndValidate(rawText: string): JudgeEvaluation {
+  public parseAndValidate(
+    rawText: string,
+    isRetryable = false,
+    modelName = this.model
+  ): JudgeEvaluation {
     const cleanedJson = extractJsonFromText(rawText);
 
     let parsedObject: unknown;
@@ -349,7 +439,7 @@ Analyze this job and output ONLY the JSON decision:`;
       throw new JudgeError(
         'INVALID_RESPONSE',
         `OpenRouter model did not return valid JSON. Parse error: ${(parseError as Error).message}. Raw response: ${rawText.slice(0, 200)}...`,
-        { model: this.model, isRetryable: false }
+        { model: modelName, isRetryable }
       );
     }
 
@@ -361,7 +451,7 @@ Analyze this job and output ONLY the JSON decision:`;
       throw new JudgeError(
         'INVALID_RESPONSE',
         `Model JSON failed Zod schema validation: ${issueSummary}`,
-        { model: this.model, isRetryable: false }
+        { model: modelName, isRetryable }
       );
     }
 

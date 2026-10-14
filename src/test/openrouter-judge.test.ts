@@ -1,5 +1,8 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { OpenRouterJudge } from '../matching/openrouter-judge.ts';
+import {
+  OpenRouterJudge,
+  extractContentFromOpenRouterChoice,
+} from '../matching/openrouter-judge.ts';
 import { JudgeError, ScrapedJob } from '../matching/types.ts';
 import {
   redactSensitiveData,
@@ -286,6 +289,143 @@ describe('OpenRouterJudge Client & Error Handling', () => {
     }
 
     expect(mockFetch).toHaveBeenCalledTimes(1);
+  });
+
+  describe('extractContentFromOpenRouterChoice', () => {
+    it('extracts direct string from message.content', () => {
+      const choice = { message: { content: '{"decision": "match"}' } };
+      expect(extractContentFromOpenRouterChoice(choice)).toBe('{"decision": "match"}');
+    });
+
+    it('extracts text from array of content chunks', () => {
+      const choice = {
+        message: {
+          content: [
+            { type: 'text', text: '{"decision":' },
+            { type: 'text', text: ' "match"}' },
+          ],
+        },
+      };
+      expect(extractContentFromOpenRouterChoice(choice)).toBe('{"decision": "match"}');
+    });
+
+    it('extracts reasoning field when content is empty or null', () => {
+      const choice = {
+        message: {
+          content: '',
+          reasoning: '```json\n{"decision": "match", "confidence": 95, "category": "both", "reasons": "IT job", "qualification_assessment": "Bac+2", "missing_information": "None"}\n```',
+        },
+      };
+      expect(extractContentFromOpenRouterChoice(choice)).toContain('{"decision": "match"');
+    });
+
+    it('extracts thinking field when content is empty', () => {
+      const choice = {
+        message: {
+          content: null,
+          thinking: '{"decision": "maybe", "confidence": 50, "category": "it_general", "reasons": "Partial match", "qualification_assessment": "None", "missing_information": "None"}',
+        },
+      };
+      expect(extractContentFromOpenRouterChoice(choice)).toContain('{"decision": "maybe"');
+    });
+
+    it('extracts choice.text fallback format', () => {
+      const choice = {
+        text: '{"decision": "reject"}',
+      };
+      expect(extractContentFromOpenRouterChoice(choice)).toBe('{"decision": "reject"}');
+    });
+  });
+
+  it('retries on empty response content with retryable=true and succeeds on subsequent attempt', async () => {
+    let callCount = 0;
+    const mockFetch = vi.fn().mockImplementation(async (_url, options) => {
+      callCount++;
+      const body = JSON.parse(options.body);
+
+      if (callCount === 1) {
+        // First attempt returns empty content (e.g. reasoning exhausted 500 tokens or upstream glitch)
+        return {
+          ok: true,
+          status: 200,
+          text: async () =>
+            JSON.stringify({
+              choices: [
+                {
+                  message: {
+                    content: '',
+                  },
+                  finish_reason: 'length',
+                },
+              ],
+            }),
+        };
+      }
+
+      // Second attempt succeeds (with fallback model or rotated attempt)
+      return {
+        ok: true,
+        status: 200,
+        text: async () =>
+          JSON.stringify({
+            choices: [
+              {
+                message: {
+                  content: JSON.stringify({
+                    decision: 'match',
+                    confidence: 90,
+                    category: 'technicien_specialise',
+                    reasons: 'Evaluated successfully after rotation',
+                    qualification_assessment: 'Bac+2 DTS',
+                    missing_information: 'None',
+                  }),
+                },
+                finish_reason: 'stop',
+              },
+            ],
+          }),
+      };
+    });
+
+    const judge = new OpenRouterJudge({
+      apiKey: 'sk-or-v1-test',
+      model: 'openrouter/free',
+      fetchFn: mockFetch as unknown as typeof fetch,
+      maxRetries: 2,
+      initialBackoffMs: 10,
+    });
+
+    const result = await judge.evaluateJob(mockJob);
+    expect(result.decision).toBe('match');
+    expect(result.confidence).toBe(90);
+    expect(callCount).toBe(2);
+  });
+
+  it('parses JSON cleanly even if enclosed with <think>...</think> reasoning blocks', () => {
+    const judge = new OpenRouterJudge({
+      apiKey: 'sk-or-v1-test',
+    });
+
+    const rawResponse = `<think>
+The job is Technicien Réseaux et Systèmes Informatiques.
+This is clearly Category A (Technicien Spécialisé DTS Bac+2).
+Decision should be match.
+</think>
+\`\`\`json
+{
+  "decision": "match",
+  "confidence": 95,
+  "category": "technicien_specialise",
+  "reasons": "Direct match for DTS networking technician in public sector",
+  "qualification_assessment": "Bac+2 DTS / ISTA",
+  "missing_information": "None"
+}
+\`\`\``;
+
+    const evaluation = judge.parseAndValidate(rawResponse);
+    expect(evaluation.decision).toBe('match');
+    expect(evaluation.confidence).toBe(95);
+    expect(evaluation.category).toBe('technicien_specialise');
   });
 });
 

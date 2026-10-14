@@ -253,6 +253,7 @@ export class JobMonitoringAgent {
         }
 
         if (summary.notificationsSent >= notificationLimit) {
+          console.log(`[Agent] Notification safety cap (${notificationLimit}) reached.`);
           break;
         }
 
