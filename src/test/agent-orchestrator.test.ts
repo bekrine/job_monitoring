@@ -3,6 +3,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { JobMonitoringAgent } from '../monitor.ts';
 import { HuggingFaceJudge } from '../matching/huggingface-judge.ts';
+import { OpenRouterJudge } from '../matching/openrouter-judge.ts';
 import { TelegramNotifier } from '../notifier/telegram.ts';
 import { ScraperCoordinator, SAMPLE_MOROCCO_JOBS } from '../scraper/scraper.ts';
 import { StateManager } from '../state/state-manager.ts';
@@ -241,5 +242,72 @@ describe('JobMonitoringAgent End-to-End Orchestration', () => {
       // None must be marked as notified
       expect(record.notified).toBe(false);
     }
+  });
+
+  it('orchestrates end-to-end with OpenRouter free model and delivers candidate alerts', async () => {
+    const mockOpenRouterFetch = vi.fn().mockImplementation(async (url: string) => {
+      if (url.includes('chat/completions')) {
+        return {
+          ok: true,
+          status: 200,
+          text: async () =>
+            JSON.stringify({
+              id: 'gen-or-123',
+              model: 'openrouter/free',
+              choices: [
+                {
+                  message: {
+                    content: JSON.stringify({
+                      decision: 'match',
+                      confidence: 96,
+                      category: 'technicien_specialise',
+                      reasons: 'Strong IT match for Bac+2 DTS Technicien Spécialisé',
+                      qualification_assessment: 'Bac+2 DTS OFPPT',
+                      missing_information: 'None',
+                    }),
+                  },
+                },
+              ],
+            }),
+        };
+      }
+      return { ok: false, status: 404, text: async () => '' };
+    });
+
+    const openRouterJudge = new OpenRouterJudge({
+      apiKey: 'sk-or-v1-mock-key',
+      fetchFn: mockOpenRouterFetch as unknown as typeof fetch,
+    });
+
+    const mockTelegramFetch = vi.fn().mockResolvedValue({
+      ok: true,
+      json: async () => ({ ok: true, result: { message_id: 303 } }),
+    });
+
+    const notifier = new TelegramNotifier({
+      botToken: 'bot_test',
+      chatId: '456',
+      fetchFn: mockTelegramFetch as unknown as typeof fetch,
+    });
+
+    const scraper = new ScraperCoordinator({ useDemoFixtures: true });
+    const stateManager = new StateManager({
+      stateFilePath: TEST_ORCH_STATE,
+      firstRunMaxNotifications: 3,
+    });
+
+    const agent = new JobMonitoringAgent({
+      judge: openRouterJudge,
+      notifier,
+      scraper,
+      stateManager,
+    });
+
+    const summary = await agent.run();
+    expect(summary.success).toBe(true);
+    expect(summary.evaluatedWithAi).toBeGreaterThan(0);
+    expect(summary.matchesFound).toBeGreaterThan(0);
+    expect(summary.notificationsSent).toBeGreaterThan(0);
+    expect(mockTelegramFetch).toHaveBeenCalled();
   });
 });

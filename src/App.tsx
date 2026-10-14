@@ -38,7 +38,7 @@ interface SimulatedEvaluation {
 
 export default function App() {
   const [activeTab, setActiveTab] = useState<'overview' | 'simulator' | 'criteria' | 'guide'>('overview');
-  const [selectedModel, setSelectedModel] = useState<string>('Qwen/Qwen2.5-Coder-7B-Instruct');
+  const [selectedModel, setSelectedModel] = useState<string>('openrouter/free');
   const [isSimulating, setIsSimulating] = useState(false);
   const [simulationResults, setSimulationResults] = useState<SimulatedEvaluation[]>([]);
   const [filterDecision, setFilterDecision] = useState<'all' | 'match' | 'maybe' | 'reject'>('all');
@@ -154,8 +154,8 @@ export default function App() {
                 <h1 className="text-lg font-bold tracking-tight text-white">
                   Morocco IT Job Monitoring Agent
                 </h1>
-                <span className="text-xs px-2.5 py-0.5 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/20 font-medium">
-                  Hugging Face Serverless
+                <span className="text-xs px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-medium">
+                  OpenRouter Free Tier ($0/mo)
                 </span>
               </div>
               <p className="text-xs text-slate-400">
@@ -239,10 +239,10 @@ export default function App() {
                   <Brain className="w-4 h-4 text-indigo-400" />
                 </div>
                 <div className="mt-2">
-                  <div className="text-lg font-bold text-white">Hugging Face</div>
+                  <div className="text-lg font-bold text-white">OpenRouter</div>
                   <div className="text-xs text-emerald-400 mt-1 flex items-center gap-1">
                     <ShieldCheck className="w-3.5 h-3.5" />
-                    Serverless (Free Allowance)
+                    100% Free Models ($0.00 / token)
                   </div>
                 </div>
               </div>
@@ -309,7 +309,7 @@ export default function App() {
                       2. Verified Model Inference
                     </div>
                     <p className="text-xs text-slate-400">
-                      Evaluates announcements with <code>Qwen/Qwen2.5-Coder-7B-Instruct</code> on Hugging Face inference. Parses structured JSON validated strictly with Zod.
+                      Evaluates announcements with <code>openrouter/free</code> (or specific free models like <code>google/gemma-4-31b-it:free</code>). Parses structured JSON validated strictly with Zod.
                     </p>
                   </div>
 
@@ -344,17 +344,18 @@ export default function App() {
 
                 <div className="space-y-3 text-xs">
                   <div>
-                    <label className="text-slate-400 font-medium block mb-1">Active Hugging Face Model (HF_MODEL)</label>
+                    <label className="text-slate-400 font-medium block mb-1">Active OpenRouter Free Model (OPENROUTER_MODEL)</label>
                     <select
                       value={selectedModel}
                       onChange={(e) => setSelectedModel(e.target.value)}
                       className="w-full bg-slate-950 border border-slate-700 rounded-lg p-2.5 text-slate-200 focus:outline-none focus:border-indigo-500"
                     >
-                      <option value="Qwen/Qwen2.5-Coder-7B-Instruct">Qwen/Qwen2.5-Coder-7B-Instruct (Verified Live: nscale, featherless-ai)</option>
-                      <option value="Qwen/Qwen2.5-Coder-3B-Instruct">Qwen/Qwen2.5-Coder-3B-Instruct (Verified Live: nscale, featherless-ai)</option>
-                      <option value="deepseek-ai/DeepSeek-R1-Distill-Qwen-7B">deepseek-ai/DeepSeek-R1-Distill-Qwen-7B (Verified Live)</option>
-                      <option value="google/gemma-3-4b-it">google/gemma-3-4b-it (Verified Live)</option>
-                      <option value="meta-llama/Llama-3.1-8B-Instruct">meta-llama/Llama-3.1-8B-Instruct (Verified Live - requires Meta license)</option>
+                      <option value="openrouter/free">openrouter/free (Default: Smart Free Pool Router - 100% Free)</option>
+                      <option value="google/gemma-4-31b-it:free">google/gemma-4-31b-it:free (262k Context - 100% Free)</option>
+                      <option value="google/gemma-4-26b-a4b-it:free">google/gemma-4-26b-a4b-it:free (262k Context - 100% Free)</option>
+                      <option value="nvidia/nemotron-3.5-lightning:free">nvidia/nemotron-3.5-lightning:free (100% Free)</option>
+                      <option value="cohere/north-mini-code:free">cohere/north-mini-code:free (100% Free)</option>
+                      <option value="liquid/lfm-2.5-2.6b:free">liquid/lfm-2.5-2.6b:free (100% Free)</option>
                     </select>
                   </div>
 
@@ -582,10 +583,10 @@ export default function App() {
                 <div className="p-4 bg-slate-950 rounded-lg border border-slate-800 space-y-2">
                   <h4 className="text-xs font-bold text-slate-200 flex items-center gap-2">
                     <ChevronRight className="w-4 h-4 text-emerald-400" />
-                    1. Hugging Face Access Token Setup
+                    1. OpenRouter Free API Key Setup
                   </h4>
                   <p className="text-xs text-slate-400">
-                    Create a free account on <a href="https://huggingface.co" target="_blank" rel="noreferrer" className="text-indigo-400 underline">Hugging Face</a>. Navigate to <strong>Settings → Access Tokens</strong>. Create a token with minimal permissions (Read / Inference: Make calls to the serverless Inference API). Copy and set as <code>HF_TOKEN</code>.
+                    Sign in to <a href="https://openrouter.ai/keys" target="_blank" rel="noreferrer" className="text-emerald-400 underline font-medium">openrouter.ai/keys</a> and generate a free API key. No credit card is needed. It provides access to 100% free models like <code>openrouter/free</code>, <code>google/gemma-4-31b-it:free</code>, etc. Set as <code>OPENROUTER_API_KEY</code>.
                   </p>
                 </div>
 
@@ -605,7 +606,7 @@ export default function App() {
                     3. Local Execution Commands
                   </h4>
                   <div className="bg-slate-900 p-3 rounded font-mono text-xs text-slate-300 space-y-1">
-                    <div># Run all 31 unit & integration tests:</div>
+                    <div># Run all 34 unit & integration tests:</div>
                     <div className="text-emerald-400">npm test</div>
                     <div className="pt-2"># Run monitoring agent in safe Dry-Run mode:</div>
                     <div className="text-emerald-400">npm run monitor:dry</div>
@@ -623,7 +624,7 @@ export default function App() {
                     In your GitHub repository, go to <strong>Settings → Secrets and variables → Actions</strong> and configure:
                   </p>
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 pt-1 font-mono text-xs">
-                    <div className="p-2 bg-slate-900 rounded border border-slate-800 text-slate-300">Secret: HF_TOKEN</div>
+                    <div className="p-2 bg-slate-900 rounded border border-slate-800 text-slate-300">Secret: OPENROUTER_API_KEY</div>
                     <div className="p-2 bg-slate-900 rounded border border-slate-800 text-slate-300">Secret: TELEGRAM_BOT_TOKEN</div>
                     <div className="p-2 bg-slate-900 rounded border border-slate-800 text-slate-300">Secret: TELEGRAM_CHAT_ID</div>
                   </div>

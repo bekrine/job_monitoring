@@ -1,6 +1,8 @@
 import * as dotenv from 'dotenv';
 import { JobMonitoringAgent } from './monitor.ts';
 import {
+  DEFAULT_OPENROUTER_MODEL,
+  verifyOpenRouterModel,
   DEFAULT_VERIFIED_HF_MODEL,
   verifyModelInferenceProvider,
 } from './matching/model-verifier.ts';
@@ -13,7 +15,7 @@ async function main() {
 
   if (args.includes('--help') || args.includes('-h')) {
     console.log(`
-Morocco IT Job Monitoring Agent (Hugging Face Edition)
+Morocco IT Job Monitoring Agent (OpenRouter Free Edition)
 
 Usage:
   npm run monitor             Run monitoring agent against Moroccan job portals
@@ -24,14 +26,16 @@ Flags:
   --dry-run                   Simulate decisions and notifications without side effects
   --demo                      Use built-in Moroccan IT announcements (no live web scrape)
   --target <url>              Custom recruitment portal or RSS feed URL
-  --model <modelId>           Override Hugging Face model identifier
-  --verify-model [modelId]    Verify if a model is currently live on Hugging Face router
+  --model <modelId>           Override AI model identifier (e.g. openrouter/free, google/gemma-4-31b-it:free)
+  --verify-model [modelId]    Verify if a model is currently free and available on OpenRouter
   --state <path>              Custom path to persistent state JSON file (default: data/seen.json)
   --help, -h                  Show this help message
 
 Environment Variables:
-  HF_TOKEN                    Hugging Face user access token (Required for AI evaluation)
-  HF_MODEL                    Hugging Face model ID (Default: ${DEFAULT_VERIFIED_HF_MODEL})
+  OPENROUTER_API_KEY          OpenRouter API key (Required for AI evaluation; get at https://openrouter.ai/keys)
+  OPENROUTER_MODEL            OpenRouter model ID (Default: ${DEFAULT_OPENROUTER_MODEL})
+  HF_TOKEN                    Legacy Hugging Face token (Optional fallback)
+  HF_MODEL                    Legacy Hugging Face model ID (Optional fallback: ${DEFAULT_VERIFIED_HF_MODEL})
   TELEGRAM_BOT_TOKEN          Telegram Bot API token
   TELEGRAM_CHAT_ID            Telegram destination Chat ID
   FIRST_RUN_MAX_NOTIFICATIONS Maximum notifications sent on initial run (Default: 5)
@@ -46,22 +50,34 @@ Environment Variables:
     const targetModel =
       args[vIdx + 1] && !args[vIdx + 1].startsWith('-')
         ? args[vIdx + 1]
-        : process.env.HF_MODEL || DEFAULT_VERIFIED_HF_MODEL;
+        : process.env.OPENROUTER_MODEL || DEFAULT_OPENROUTER_MODEL;
 
-    console.log(`Verifying router inference availability for model: ${targetModel}...`);
-    const result = await verifyModelInferenceProvider(targetModel);
-    if (result.isSupportedOnRouter) {
-      console.log(`[PASS] Model '${targetModel}' is LIVE on Hugging Face Inference Providers.`);
-      console.log(`  Live Providers: ${result.liveProviders.join(', ')}`);
-      if (result.pricing) {
-        console.log(`  Pricing: $${result.pricing.input}/1M input, $${result.pricing.output}/1M output`);
+    console.log(`Verifying OpenRouter availability and zero-cost pricing for model: ${targetModel}...`);
+    const result = await verifyOpenRouterModel(targetModel);
+    if (result.isAvailable) {
+      console.log(`[PASS] Model '${targetModel}' is LIVE on OpenRouter.`);
+      console.log(`  Zero-cost Free Model: ${result.isFree ? 'YES (100% Free)' : 'NO (Paid model)'}`);
+      if (result.contextLength) {
+        console.log(`  Context Length: ${result.contextLength} tokens`);
       }
-      process.exit(0);
+      if (result.pricing) {
+        console.log(`  Pricing: $${result.pricing.prompt}/token prompt, $${result.pricing.completion}/token completion`);
+      }
+      process.exit(result.isFree ? 0 : 1);
     } else {
-      console.error(`[FAIL] Model '${targetModel}' is NOT supported on the Hugging Face router.`);
+      console.error(`[FAIL] Model '${targetModel}' was not found in OpenRouter catalog.`);
       if (result.error) console.error(`  Error: ${result.error}`);
-      console.log(`  Suggested supported models:`);
+      console.log(`  Suggested verified free models on OpenRouter:`);
       result.suggestions.forEach((s) => console.log(`    - ${s}`));
+
+      // Check Hugging Face router as fallback info
+      if (process.env.HF_TOKEN) {
+        console.log('\nChecking Hugging Face router as fallback...');
+        const hfResult = await verifyModelInferenceProvider(targetModel);
+        if (hfResult.isSupportedOnRouter) {
+          console.log(`  Model is available on Hugging Face router providers: ${hfResult.liveProviders.join(', ')}`);
+        }
+      }
       process.exit(1);
     }
   }
@@ -85,15 +101,25 @@ Environment Variables:
   const modelIdx = args.indexOf('--model');
   if (modelIdx !== -1 && args[modelIdx + 1]) {
     customModel = args[modelIdx + 1];
-    process.env.HF_MODEL = customModel;
+    process.env.OPENROUTER_MODEL = customModel;
   }
 
-  const activeModel = customModel || process.env.HF_MODEL || DEFAULT_VERIFIED_HF_MODEL;
+  const activeProvider = process.env.OPENROUTER_API_KEY
+    ? 'OpenRouter (Free Models)'
+    : process.env.HF_TOKEN
+    ? 'Hugging Face (Legacy)'
+    : 'None (Prefilter Only)';
+
+  const activeModel =
+    customModel ||
+    process.env.OPENROUTER_MODEL ||
+    DEFAULT_OPENROUTER_MODEL;
 
   console.log('='.repeat(65));
-  console.log('Morocco IT Job Monitoring Agent - Hugging Face Edition');
+  console.log('Morocco IT Job Monitoring Agent - OpenRouter Free Edition');
   console.log(`Mode: ${dryRun ? 'DRY RUN' : 'PRODUCTION'}`);
   console.log(`Source: ${customTargetUrl || (demo ? 'Built-in Moroccan Fixtures' : 'Emploi-Public.ma Portal')}`);
+  console.log(`Provider: ${activeProvider}`);
   console.log(`Model: ${activeModel}`);
   console.log('='.repeat(65));
 
@@ -120,7 +146,7 @@ Environment Variables:
     console.log(`- Telegram Notifications: ${summary.notificationsSent}`);
 
     if (summary.quotaExhausted) {
-      console.warn('⚠️ WARNING: Hugging Face free tier inference quota was exhausted during run.');
+      console.warn('⚠️ WARNING: Free tier inference quota was exhausted during run.');
     }
 
     if (summary.errors.length > 0) {

@@ -30,6 +30,12 @@ export const JudgeEvaluationSchema = z.object({
 
 export type JudgeEvaluation = z.infer<typeof JudgeEvaluationSchema>;
 
+export interface AiJudge {
+  evaluateJob(job: ScrapedJob): Promise<JudgeEvaluation>;
+  categorizeError(err: unknown): JudgeError;
+  getModelName(): string;
+}
+
 export interface ScrapedJob {
   id: string;
   title: string;

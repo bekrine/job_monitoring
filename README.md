@@ -1,8 +1,8 @@
-# Morocco IT Job Monitoring Agent (Hugging Face Edition)
+# Morocco IT Job Monitoring Agent (OpenRouter Free Edition)
 
 An autonomous monitoring agent for Information Technology job postings and competitive civil service recruitment notices (*concours de recrutement*) in Morocco.
 
-The agent scrapes Moroccan portals (including the official [Emploi-Public.ma](https://www.emploi-public.ma) portal), prefilters announcements to conserve quota, evaluates candidates using a verified serverless **Hugging Face** model, sends real-time alerts via **Telegram**, and maintains atomic persistent state in `data/seen.json`.
+The agent scrapes Moroccan portals (including the official [Emploi-Public.ma](https://www.emploi-public.ma) portal), prefilters announcements to conserve quota, evaluates candidates using a 100% free **OpenRouter** model (such as `openrouter/free` or `google/gemma-4-31b-it:free`), sends real-time alerts via **Telegram**, and maintains atomic persistent state in `data/seen.json`.
 
 ---
 
@@ -21,14 +21,14 @@ The agent scrapes Moroccan portals (including the official [Emploi-Public.ma](ht
    State & Cache Check (data/seen.json - prevents repeat evaluations)
           │
           ▼
-   Hugging Face AI Judge (Qwen/Qwen2.5-7B-Instruct via @huggingface/inference)
+   OpenRouter Free AI Judge (openrouter/free / google/gemma-4-31b-it:free)
           │
     ┌─────┴────────────────┐
     ▼                      ▼
   MATCH / MAYBE          REJECT (Never notified)
     │
     ▼
-  Telegram Notifier (HTML alerts with direct portal links)
+  Telegram Notifier (HTML alerts with direct portal links delivered one by one)
     │
     ▼
   Atomic State Persist (data/seen.json)
@@ -36,73 +36,40 @@ The agent scrapes Moroccan portals (including the official [Emploi-Public.ma](ht
 
 ---
 
-## 1. Creating a Hugging Face Account
+## 1. Creating a Free OpenRouter Account & API Key
 
-1. Go to [huggingface.co/join](https://huggingface.co/join).
-2. Enter your email and choose a secure password.
-3. Verify your email address by clicking the link sent to your inbox.
-4. No credit card is required to sign up or use the standard free inference allowance.
-
----
-
-## 2. Creating an Access Token with Minimal Permissions
-
-To adhere to the principle of least privilege:
-
-1. Click your profile avatar at the top right of Hugging Face and select **Settings**.
-2. Click **Access Tokens** in the left sidebar (or visit [huggingface.co/settings/tokens](https://huggingface.co/settings/tokens)).
-3. Click **Create new token**.
-4. Choose **Fine-grained** token (or **Read** token).
-5. Name the token: `morocco-job-monitor`.
-6. Under permissions, select:
-   - **Inference**: *Make calls to the serverless Inference API*
-7. Click **Create token** and copy the resulting string (starts with `hf_...`). Store it securely.
+1. Go to [openrouter.ai](https://openrouter.ai).
+2. Sign in with your Google or GitHub account (or email).
+3. Navigate to [openrouter.ai/keys](https://openrouter.ai/keys).
+4. Click **Create Key**, give it a name (e.g. `morocco-job-monitor`), and copy the key (starts with `sk-or-v1-...`).
+5. **Zero Spend / No Credit Card:** OpenRouter free models (ending with `:free` or `openrouter/free`) are 100% free with $0 balance required!
 
 ---
 
-## 3. Verifying the Selected Model & Inference Route
+## 2. Supported Free Models on OpenRouter
 
-Not every model on the Hugging Face Hub is available for serverless inference through Inference Providers. Do not assume a model is supported simply because it exists on the Hub.
+OpenRouter hosts dedicated free models with $0.00 prompt and completion cost:
 
-The verified default model for this agent is **`Qwen/Qwen2.5-Coder-7B-Instruct`**:
-- **Why chosen:** Open license (non-gated, no manual approval), actively served by live Inference Providers (`nscale`, `featherless-ai`), highly proficient in software engineering and IT terminology, and exceptionally cost-effective ($0.01 per 1M input tokens, $0.03 per 1M output tokens), easily operating within the $0.10 monthly free credit allowance.
-- **Model Discovery & Live Verification:**
-  You can verify any model's live availability on the Hugging Face router using the built-in CLI command:
-  ```bash
-  # Verify default model:
-  npx tsx src/cli.ts --verify-model
+- **`openrouter/free`** (Recommended Default): A smart dynamic router that automatically routes requests to the fastest, most available free model from OpenRouter's pool.
+- **`google/gemma-4-31b-it:free`**: 262k context window, exceptional French and Arabic language comprehension for Moroccan diplomas and concurso notices.
+- **`google/gemma-4-26b-a4b-it:free`**: Fast multimodal free model.
+- **`nvidia/nemotron-3.5-lightning:free`**: Ultra-low latency, highly capable instruction model.
+- **`cohere/north-mini-code:free`**: Specialized IT and coding model.
+- **`liquid/lfm-2.5-2.6b:free`**: Lightweight, responsive free model.
 
-  # Verify a specific model:
-  npx tsx src/cli.ts --verify-model Qwen/Qwen2.5-Coder-7B-Instruct
-  ```
-  Or inspect the live router catalog directly:
-  ```bash
-  curl -s https://router.huggingface.co/v1/models | jq '.data[].id'
-  ```
-- **Alternative verified live models on the router:**
-  - `Qwen/Qwen2.5-Coder-3B-Instruct` (Ultra-light, fast)
-  - `deepseek-ai/DeepSeek-R1-Distill-Qwen-7B` (Reasoning & classification)
-  - `google/gemma-3-4b-it` (Google lightweight instruction model)
-  - `meta-llama/Llama-3.1-8B-Instruct` (Requires Meta community license acceptance on Hugging Face before token access)
+You can verify any model's live availability and free status using the built-in CLI:
 
-> **Note on `Qwen/Qwen2.5-7B-Instruct`:** This model is not currently active on the Hugging Face serverless router, causing requests to return `ProviderApiError: Failed to perform inference: an HTTP error occurred when requesting the provider.` (HTTP 404/400). Always use `Qwen/Qwen2.5-Coder-7B-Instruct` or run `--verify-model` before choosing an alternative.
+```bash
+# Verify default free model:
+npx tsx src/cli.ts --verify-model
 
----
-
-## 4. Configuring `HF_TOKEN` and `HF_MODEL`
-
-In your environment or `.env` file:
-
-```env
-HF_TOKEN="hf_your_actual_token_here"
-HF_MODEL="Qwen/Qwen2.5-Coder-7B-Instruct"
+# Verify a specific model:
+npx tsx src/cli.ts --verify-model google/gemma-4-31b-it:free
 ```
 
-The application strictly avoids paid inference providers, third-party API keys, or automatic billing.
-
 ---
 
-## 5. Creating the Telegram Bot Using BotFather
+## 3. Creating the Telegram Bot Using BotFather
 
 1. Open Telegram and search for the official account **`@BotFather`** (verified checkmark).
 2. Start the chat and send the command `/newbot`.
@@ -114,7 +81,7 @@ The application strictly avoids paid inference providers, third-party API keys, 
 
 ---
 
-## 6. Retrieving Your Telegram Chat ID
+## 4. Retrieving Your Telegram Chat ID
 
 1. Open a chat with your newly created bot and click **Start** (or send `/start`).
 2. Search for the utility bot **`@userinfobot`** on Telegram.
@@ -125,7 +92,7 @@ The application strictly avoids paid inference providers, third-party API keys, 
 
 ---
 
-## 7. Configuring Local Environment Variables
+## 5. Configuring Local Environment Variables
 
 Copy the template configuration file:
 
@@ -136,8 +103,8 @@ cp .env.example .env
 Edit `.env` with your credentials:
 
 ```env
-HF_TOKEN="hf_..."
-HF_MODEL="Qwen/Qwen2.5-7B-Instruct"
+OPENROUTER_API_KEY="sk-or-v1-..."
+OPENROUTER_MODEL="openrouter/free"
 TELEGRAM_BOT_TOKEN="123456789:..."
 TELEGRAM_CHAT_ID="987654321"
 FIRST_RUN_MAX_NOTIFICATIONS="5"
@@ -146,13 +113,13 @@ MAX_NOTIFICATIONS_PER_RUN="10"
 
 ---
 
-## 8. Running Tests and a Dry Run
+## 6. Running Tests and a Dry Run
 
 ### Run All Unit and Integration Tests
 ```bash
 npm test
 ```
-The test suite validates mock Hugging Face inference responses, valid/malformed JSON, rate limits, quota exhaustion, exponential backoff retries, Telegram formatting, and atomic state handling without requiring real credentials.
+The test suite validates mock OpenRouter inference responses, valid/malformed JSON, rate limits, quota exhaustion, exponential backoff retries, Telegram formatting, and atomic state handling without requiring real credentials.
 
 ### Run a Safe Dry Run
 ```bash
@@ -171,48 +138,51 @@ npm run monitor
 
 ---
 
-## 9. Configuring GitHub Actions Secrets & Variables
+## 7. Configuring GitHub Actions Secrets & Variables
 
 In your GitHub repository:
 
 1. Go to **Settings → Secrets and variables → Actions**.
 2. Under **Repository secrets**, click **New repository secret** and add:
-   - `HF_TOKEN`: Your Hugging Face access token.
+   - `OPENROUTER_API_KEY`: Your OpenRouter free API key (`sk-or-v1-...`).
    - `TELEGRAM_BOT_TOKEN`: The bot token from BotFather.
    - `TELEGRAM_CHAT_ID`: Your destination numeric chat ID.
 3. Under **Repository variables** (optional):
-   - `HF_MODEL`: `Qwen/Qwen2.5-7B-Instruct` (defaults automatically if unset).
+   - `OPENROUTER_MODEL`: `openrouter/free` (or `google/gemma-4-31b-it:free`).
+
+*(Note: Legacy `HF_TOKEN` and `HF_MODEL` continue to be supported as an optional fallback if configured).*
 
 ---
 
-## 10. Enabling the Daily Schedule
+## 8. Enabling the Daily Schedule
 
 The GitHub Actions workflow is located at `.github/workflows/job-monitor.yml`.
 
 - **Cron Schedule:** `0 8 * * *` (runs once each day at 08:00 UTC / 09:00 Morocco time).
 - **Concurrency Guard:** Prevents overlapping runs.
 - **Pre-execution Verification:** Runs `npm test` before executing the scraper.
+- **Lockfile Resolution:** Automatically detects presence of `package-lock.json` and runs `npm ci` or `npm install`.
 - **State Persistence:** Automatically commits updated `data/seen.json` back to the repository upon completion with `[skip ci]`.
 - **Manual Trigger:** You can trigger the workflow anytime from the **Actions** tab with optional dry-run and demo inputs.
 
 ---
 
-## 11. Troubleshooting Guide
+## 9. Troubleshooting Guide
 
 | Problem | Cause | Resolution |
 | :--- | :--- | :--- |
-| `[AUTH_FAILURE] 401/403` | Invalid or expired token | Verify `HF_TOKEN` starts with `hf_` and has inference permissions on Hugging Face. |
-| `[QUOTA_EXHAUSTED] 402` | Monthly free credit exhausted | The agent pauses AI evaluation gracefully. Un-evaluated jobs remain retryable. Wait for quota reset or switch to another supported open model. |
-| `[RATE_LIMIT] 429` | Too many calls per 5 minutes | The agent automatically performs exponential backoff retries (up to 3 times). |
-| `[MODEL_UNAVAILABLE] 503` | Model is loading/warming up | Normal serverless behavior. The agent automatically retries with backoff while the model spins up. |
+| `[AUTH_FAILURE] 401/403` | Invalid or expired token | Verify `OPENROUTER_API_KEY` starts with `sk-or-v1-` and was created at [openrouter.ai/keys](https://openrouter.ai/keys). |
+| `[QUOTA_EXHAUSTED] 402` | Monthly free credit exhausted | The agent pauses AI evaluation gracefully. Un-evaluated jobs remain retryable. Use `openrouter/free` to leverage free pool models. |
+| `[RATE_LIMIT] 429` | Too many calls per minute | The agent automatically performs exponential backoff retries with jitter (up to 3 times). |
+| `[PROVIDER_UNAVAILABLE] 503` | Upstream provider busy | The agent automatically retries with exponential backoff. |
 | `Telegram error: 400 Chat not found` | Bot was not started | Open your bot in Telegram and send `/start` before running the agent. |
 | `No jobs scraped` | Moroccan portal connectivity glitch | The agent automatically falls back to safe fixtures and preserves state. |
 
 ---
 
-## 12. Understanding Free-Tier Limits & Spending Protection
+## 10. Zero-Cost Protection Guarantee
 
-- **No Unlimited Inference:** Free inference services are shared community resources. Hugging Face provides a free allowance (currently $0.10/month shared pool across serverless providers and hub rate limits).
+- **100% Free Models:** OpenRouter free models have zero dollar prompt and completion pricing.
 - **No Automatic Charges:** The agent code **strictly forbids** registering paid fallback providers or initiating automatic payment.
-- **Graceful Halt:** When free credits are exhausted, the agent reports the issue and stops. It **never fabricates** synthetic decisions or marks unevaluated jobs as rejected.
-- **Conservative Token Budget:** Low token caps (~450 tokens) and prefiltering ensure every free token is used efficiently.
+- **Graceful Halt:** When credits are exhausted, the agent reports the issue and stops. It **never fabricates** synthetic decisions or marks unevaluated jobs as rejected.
+- **Conservative Token Budget:** Low token caps (~500 tokens) and prefiltering ensure maximum efficiency.

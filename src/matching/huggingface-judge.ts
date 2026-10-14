@@ -6,6 +6,7 @@ import {
   redactSensitiveData,
 } from './model-verifier.ts';
 import {
+  AiJudge,
   JudgeEvaluation,
   JudgeEvaluationSchema,
   JudgeError,
@@ -49,7 +50,7 @@ export function extractJsonFromText(rawText: string): string {
   return trimmed;
 }
 
-export class HuggingFaceJudge {
+export class HuggingFaceJudge implements AiJudge {
   private readonly client: InferenceClient;
   private readonly model: string;
   private readonly criteriaText: string;

@@ -1,6 +1,13 @@
-/**
- * Model Verification and Sensitive Data Redaction Utilities for Hugging Face Inference Providers.
- */
+export const VERIFIED_OPENROUTER_FREE_MODELS = [
+  'openrouter/free',
+  'google/gemma-4-31b-it:free',
+  'google/gemma-4-26b-a4b-it:free',
+  'nvidia/nemotron-3.5-lightning:free',
+  'cohere/north-mini-code:free',
+  'liquid/lfm-2.5-2.6b:free',
+] as const;
+
+export const DEFAULT_OPENROUTER_MODEL = 'openrouter/free';
 
 export const VERIFIED_ROUTER_MODELS = [
   'Qwen/Qwen2.5-Coder-7B-Instruct',
@@ -17,6 +24,16 @@ export interface ModelVerificationResult {
   isSupportedOnRouter: boolean;
   liveProviders: string[];
   pricing?: { input: number; output: number };
+  suggestions: string[];
+  error?: string;
+}
+
+export interface OpenRouterModelVerificationResult {
+  model: string;
+  isAvailable: boolean;
+  isFree: boolean;
+  contextLength?: number;
+  pricing?: { prompt: string; completion: string };
   suggestions: string[];
   error?: string;
 }
@@ -41,6 +58,9 @@ export function redactSensitiveData(input: unknown): string {
   // Redact Authorization headers or Bearer tokens
   text = text.replace(/(Bearer\s+)[^\s"';,}]+/gi, '$1[REDACTED]');
 
+  // Redact OpenRouter API keys (sk-or-v1-...)
+  text = text.replace(/sk-or-v1-[a-zA-Z0-9_-]{8,}/g, 'sk-or-[REDACTED]');
+
   // Redact Hugging Face tokens (hf_...)
   text = text.replace(/hf_[a-zA-Z0-9_]{4,}/g, 'hf_[REDACTED]');
 
@@ -54,6 +74,76 @@ export function redactSensitiveData(input: unknown): string {
   );
 
   return text;
+}
+
+/**
+ * Checks if a model is currently available and free on OpenRouter.
+ */
+export async function verifyOpenRouterModel(
+  model: string,
+  fetchFn: typeof fetch = fetch
+): Promise<OpenRouterModelVerificationResult> {
+  const result: OpenRouterModelVerificationResult = {
+    model,
+    isAvailable: false,
+    isFree: false,
+    suggestions: [...VERIFIED_OPENROUTER_FREE_MODELS],
+  };
+
+  try {
+    const res = await fetchFn('https://openrouter.ai/api/v1/models', {
+      headers: { Accept: 'application/json' },
+    });
+
+    if (!res.ok) {
+      result.error = `Failed to query OpenRouter models catalog: HTTP ${res.status}`;
+      return result;
+    }
+
+    const data = (await res.json()) as {
+      data?: Array<{
+        id: string;
+        name?: string;
+        context_length?: number;
+        pricing?: { prompt?: string; completion?: string };
+      }>;
+    };
+
+    if (!data.data || !Array.isArray(data.data)) {
+      result.error = 'OpenRouter returned malformed model catalog.';
+      return result;
+    }
+
+    const matched = data.data.find((m) => m.id.toLowerCase() === model.toLowerCase());
+    if (matched) {
+      result.isAvailable = true;
+      result.contextLength = matched.context_length;
+      result.pricing = {
+        prompt: matched.pricing?.prompt ?? '0',
+        completion: matched.pricing?.completion ?? '0',
+      };
+      // Check if price is 0 or model ends with :free or is openrouter/free
+      const isZeroPrice =
+        parseFloat(matched.pricing?.prompt || '0') === 0 &&
+        parseFloat(matched.pricing?.completion || '0') === 0;
+      result.isFree = isZeroPrice || matched.id.endsWith(':free') || matched.id === 'openrouter/free';
+    } else {
+      // Find candidate free models
+      const freeList = data.data
+        .filter((m) => m.id.endsWith(':free') || m.id === 'openrouter/free')
+        .map((m) => m.id)
+        .slice(0, 6);
+
+      if (freeList.length > 0) {
+        result.suggestions = freeList;
+      }
+    }
+
+    return result;
+  } catch (err) {
+    result.error = `Network error during OpenRouter model verification: ${(err as Error).message}`;
+    return result;
+  }
 }
 
 /**

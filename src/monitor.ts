@@ -1,6 +1,7 @@
 import { deduplicateJobs, prefilterJob } from './matching/prefilter.ts';
+import { OpenRouterJudge } from './matching/openrouter-judge.ts';
 import { HuggingFaceJudge } from './matching/huggingface-judge.ts';
-import { JudgeError, ScrapedJob } from './matching/types.ts';
+import { AiJudge, JudgeError, ScrapedJob } from './matching/types.ts';
 import { TelegramNotifier } from './notifier/telegram.ts';
 import { ScraperCoordinator } from './scraper/scraper.ts';
 import { StateManager } from './state/state-manager.ts';
@@ -10,7 +11,7 @@ export interface MonitorOptions {
   useDemoFixtures?: boolean;
   customTargetUrl?: string;
   stateFilePath?: string;
-  judge?: HuggingFaceJudge;
+  judge?: AiJudge;
   notifier?: TelegramNotifier;
   stateManager?: StateManager;
   scraper?: ScraperCoordinator;
@@ -35,7 +36,7 @@ export interface MonitorRunSummary {
 export class JobMonitoringAgent {
   private readonly stateManager: StateManager;
   private readonly scraper: ScraperCoordinator;
-  private readonly judge?: HuggingFaceJudge;
+  private readonly judge?: AiJudge;
   private readonly notifier: TelegramNotifier;
   private readonly dryRun: boolean;
 
@@ -60,6 +61,12 @@ export class JobMonitoringAgent {
 
     if (options.judge) {
       this.judge = options.judge;
+    } else if (process.env.OPENROUTER_API_KEY || process.env.OPENROUTER_TOKEN) {
+      try {
+        this.judge = new OpenRouterJudge();
+      } catch (err) {
+        console.warn(`[Agent] Notice initializing OpenRouterJudge: ${(err as Error).message}`);
+      }
     } else if (process.env.HF_TOKEN) {
       try {
         this.judge = new HuggingFaceJudge();
@@ -145,7 +152,7 @@ export class JobMonitoringAgent {
         summary.cachedEvaluationsUsed++;
       } else if (!summary.quotaExhausted) {
         if (!this.judge) {
-          const warnMsg = `Hugging Face AI judge is not configured (HF_TOKEN missing). Skipping AI evaluation for job ${job.id}.`;
+          const warnMsg = `AI judge is not configured (OPENROUTER_API_KEY or HF_TOKEN missing). Skipping AI evaluation for job ${job.id}.`;
           console.warn(`[Agent] ${warnMsg}`);
           summary.errors.push(warnMsg);
           continue;
@@ -231,13 +238,13 @@ export class JobMonitoringAgent {
       }
     }
 
-    // Fallback delivery when Hugging Face quota is exhausted:
+    // Fallback delivery when AI quota is exhausted:
     // If AI evaluation was halted due to quota exhaustion, send the candidate IT jobs one by one
     // so the user still receives all discovered opportunities in Morocco!
     if (summary.quotaExhausted && this.notifier.isConfigured() && !this.dryRun) {
       console.log('[Agent] Dispatching prefiltered Moroccan IT opportunities one by one to Telegram...');
       await this.notifier.sendMessage(
-        '⚠️ <b>Hugging Face Quota Alert (HTTP 402)</b>: Your HF account has 0 inference credits. Delivering discovered Moroccan IT job postings directly one by one:'
+        '⚠️ <b>AI Quota Alert (HTTP 402)</b>: AI model free allowance exhausted. Delivering discovered Moroccan IT job postings directly one by one:'
       );
 
       for (const { job, reason } of itCandidateJobs) {
