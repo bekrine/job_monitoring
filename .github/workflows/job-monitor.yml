@@ -2,8 +2,8 @@ name: Morocco IT Job Monitoring Agent
 
 on:
   schedule:
-    # Runs every 3 hours at minute 0 UTC
-    - cron: '0 */3 * * *'
+    # Runs once each day at 08:00 UTC (09:00 Morocco / West Africa Time)
+    - cron: '0 8 * * *'
   workflow_dispatch:
     inputs:
       dry_run:
@@ -40,10 +40,15 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: 'npm'
+          cache: ${{ hashFiles('package-lock.json') != '' && 'npm' || '' }}
 
       - name: Install dependencies
-        run: npm ci
+        run: |
+          if [ -f package-lock.json ]; then
+            npm ci
+          else
+            npm install
+          fi
 
       - name: Run test suite
         run: npm test

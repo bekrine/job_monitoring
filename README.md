@@ -185,11 +185,11 @@ In your GitHub repository:
 
 ---
 
-## 10. Enabling the Three-Hour Schedule
+## 10. Enabling the Daily Schedule
 
 The GitHub Actions workflow is located at `.github/workflows/job-monitor.yml`.
 
-- **Cron Schedule:** `0 */3 * * *` (runs every 3 hours at minute 0 UTC).
+- **Cron Schedule:** `0 8 * * *` (runs once each day at 08:00 UTC / 09:00 Morocco time).
 - **Concurrency Guard:** Prevents overlapping runs.
 - **Pre-execution Verification:** Runs `npm test` before executing the scraper.
 - **State Persistence:** Automatically commits updated `data/seen.json` back to the repository upon completion with `[skip ci]`.
