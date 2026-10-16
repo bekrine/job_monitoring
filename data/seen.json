@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "lastRunAt": "2026-10-15T12:57:05.304Z",
-  "totalJobsSeen": 21,
+  "lastRunAt": "2026-10-16T12:49:51.761Z",
+  "totalJobsSeen": 25,
   "jobs": {
     "ep-7c571fa5-42a7-46a6-8021-aed9ed9ec5f0": {
       "id": "ep-7c571fa5-42a7-46a6-8021-aed9ed9ec5f0",
@@ -9,7 +9,7 @@
       "title": "مباراة لتوظيف متصرف من الدرجة الثانية - سلم 11 وزارة الفلاحة والصيد البحري والتنمية القروية والمياه والغابات - قطاع الفلاحة الإعلان 38 مناصب آخر أجل لإيداع ملفات الترشيح : 30 أكتوبر 2026 - 16:30 تاريخ",
       "employer": "وزارة الفلاحة والصيد البحري والتنمية القروية",
       "firstSeenAt": "2026-10-12T19:31:24.806Z",
-      "lastUpdatedAt": "2026-10-15T12:56:23.630Z",
+      "lastUpdatedAt": "2026-10-16T12:49:08.733Z",
       "detailFetched": true,
       "evaluated": true,
       "notified": true,
@@ -30,7 +30,7 @@
       "title": "مباراة لتوظيف مهندس دولة من الدرجة الأولى - سلم 11 وزارة التربية الوطنية والتعليم الأولي والرياضة - قطاع التربية الوطنية الإعلان 1 منصب آخر أجل لإيداع ملفات الترشيح : 7 أكتوبر 2026 - 16:30 تاريخ إجراء",
       "employer": "وزارة التربية الوطنية والتعليم الأولي والرياضة",
       "firstSeenAt": "2026-10-12T19:31:25.159Z",
-      "lastUpdatedAt": "2026-10-15T12:56:23.875Z",
+      "lastUpdatedAt": "2026-10-16T12:49:09.137Z",
       "detailFetched": true,
       "evaluated": true,
       "notified": true,
@@ -51,7 +51,7 @@
       "title": "مباراة لتوظيف متصرف من الدرجة الثالثة - سلم 10 وزارة التربية الوطنية والتعليم الأولي والرياضة - قطاع التربية الوطنية الإعلان 32 مناصب آخر أجل لإيداع ملفات الترشيح : 7 أكتوبر 2026 - 16:30 تاريخ إجراء ا",
       "employer": "وزارة التربية الوطنية والتعليم الأولي والرياضة",
       "firstSeenAt": "2026-10-12T19:31:25.308Z",
-      "lastUpdatedAt": "2026-10-15T12:56:24.107Z",
+      "lastUpdatedAt": "2026-10-16T12:49:10.304Z",
       "detailFetched": true,
       "evaluated": false,
       "notified": false,
@@ -63,7 +63,7 @@
       "title": "مباراة لتوظيف متصرف من الدرجة الثانية - سلم 11 وزارة التربية الوطنية والتعليم الأولي والرياضة - قطاع التربية الوطنية الإعلان 2 مناصب آخر أجل لإيداع ملفات الترشيح : 7 أكتوبر 2026 - 16:30 تاريخ إجراء ال",
       "employer": "وزارة التربية الوطنية والتعليم الأولي والرياضة",
       "firstSeenAt": "2026-10-12T19:31:25.421Z",
-      "lastUpdatedAt": "2026-10-15T12:56:24.295Z",
+      "lastUpdatedAt": "2026-10-16T12:49:10.927Z",
       "detailFetched": true,
       "evaluated": false,
       "notified": false,
@@ -75,7 +75,7 @@
       "title": "لائحة المدعوين لإجراء الاختبار الكتابي لمباراة توظيف مهندس دولة من الدرجة الأولى - سلم 11 وزارة الداخلية -المديرية العامة للوقاية المدنية- الاستدعاء 4 مناصب آخر أجل لإيداع ملفات الترشيح : 5 أكتوبر 202",
       "employer": "وزارة الداخلية -المديرية العامة للوقاية المدنية-",
       "firstSeenAt": "2026-10-12T19:31:25.552Z",
-      "lastUpdatedAt": "2026-10-15T12:56:26.304Z",
+      "lastUpdatedAt": "2026-10-16T12:49:11.534Z",
       "detailFetched": true,
       "evaluated": true,
       "notified": true,
@@ -96,7 +96,7 @@
       "title": "لائحة المدعوين لإجراء الاختبار الكتابي لمباراة توظيف تقني من الدرجة الثالثة - سلم 9 وزارة الداخلية -المديرية العامة للوقاية المدنية- الاستدعاء 12 مناصب آخر أجل لإيداع ملفات الترشيح : 5 أكتوبر 2026 - 1",
       "employer": "وزارة الداخلية -المديرية العامة للوقاية المدنية-",
       "firstSeenAt": "2026-10-12T19:31:25.678Z",
-      "lastUpdatedAt": "2026-10-15T12:56:27.238Z",
+      "lastUpdatedAt": "2026-10-16T12:49:12.640Z",
       "detailFetched": true,
       "evaluated": true,
       "notified": true,
@@ -117,7 +117,7 @@
       "title": "لائحة المدعوين لإجراء الاختبار الشفوي لمباراة توظيف صيدلي من الدرجة الأولى - سلم 11 وزارة الداخلية الاستدعاء للمقابلات الشفوية 1 منصب آخر أجل لإيداع ملفات الترشيح : 30 شتنبر 2026 - 16:30 تاريخ إجراء ا",
       "employer": "وزارة الداخلية الاستدعاء للمقابلات الشفوية 1",
       "firstSeenAt": "2026-10-12T19:31:25.843Z",
-      "lastUpdatedAt": "2026-10-15T12:56:29.241Z",
+      "lastUpdatedAt": "2026-10-16T12:49:13.199Z",
       "detailFetched": true,
       "evaluated": false,
       "notified": false,
@@ -327,6 +327,87 @@
       "evaluated": false,
       "notified": false,
       "prefilterPassed": false
+    },
+    "ep-cdda2f24-9751-4129-85a7-220a7716847a": {
+      "id": "ep-cdda2f24-9751-4129-85a7-220a7716847a",
+      "url": "https://www.emploi-public.ma/ar/%D8%AA%D9%81%D8%A7%D8%B5%D9%8A%D9%84/%D8%A7%D9%84%D9%85%D8%A8%D8%A7%D8%B1%D9%8A%D8%A7%D8%AA/cdda2f24-9751-4129-85a7-220a7716847a",
+      "title": "مباراة لتوظيف مساعد تقني من الدرجة الثانية وزارة التضامن والإدماج الاجتماعي والأسرة الإعلان الايداع الالكتروني 3 مناصب آخر أجل لإيداع ملفات الترشيح : 8 نونبر 2026 تاريخ إجراء المباراة : 15 نونبر 2026",
+      "employer": "وزارة التضامن والإدماج الاجتماعي والأسرة الإعلان",
+      "firstSeenAt": "2026-10-16T12:48:17.462Z",
+      "lastUpdatedAt": "2026-10-16T12:48:40.916Z",
+      "detailFetched": true,
+      "evaluated": true,
+      "notified": false,
+      "prefilterPassed": true,
+      "evaluation": {
+        "decision": "reject",
+        "confidence": 95,
+        "category": "irrelevant",
+        "reasons": "The specialization (تخصص) listed is مصلح مركبات السيارات, ميكانيك السيارات, مصلح السيارات, and الترصيص الصحي — all vehicle mechanics and health insurance related, with no mention of informatique or IT development. This is a non-IT technical position.",
+        "qualification_assessment": "مساعد تقني من الدرجة الثانية (Second-grade technical assistant) — vehicle mechanics/health insurance specialization, not IT-related",
+        "missing_information": "None"
+      }
+    },
+    "ep-17f2da87-11bb-4fb4-8b3c-1712f117c3ce": {
+      "id": "ep-17f2da87-11bb-4fb4-8b3c-1712f117c3ce",
+      "url": "https://www.emploi-public.ma/ar/%D8%AA%D9%81%D8%A7%D8%B5%D9%8A%D9%84/%D8%A7%D9%84%D9%85%D8%A8%D8%A7%D8%B1%D9%8A%D8%A7%D8%AA/17f2da87-11bb-4fb4-8b3c-1712f117c3ce",
+      "title": "مباراة لتوظيف تقني من الدرجة الثالثة - سلم 9 وزارة التضامن والإدماج الاجتماعي والأسرة الإعلان الايداع الالكتروني 1 منصب آخر أجل لإيداع ملفات الترشيح : 8 نونبر 2026 تاريخ إجراء المباراة : 15 نونبر 2026",
+      "employer": "وزارة التضامن والإدماج الاجتماعي والأسرة الإعلان",
+      "firstSeenAt": "2026-10-16T12:48:40.916Z",
+      "lastUpdatedAt": "2026-10-16T12:49:07.190Z",
+      "detailFetched": true,
+      "evaluated": true,
+      "notified": true,
+      "prefilterPassed": true,
+      "evaluation": {
+        "decision": "match",
+        "confidence": 95,
+        "category": "technicien_specialise",
+        "reasons": "The job announcement is for a 'Technicien de 3ème grade - Échelle 9' (Technician of the third grade) in 'Réseaux informatiques' (شبكة المعلوميات / Computer Networks). This is a specialized IT technician role corresponding directly to the Technicien Spécialisé (Bac+2 / DTS / Grade 3) profile in the Moroccan public sector.",
+        "qualification_assessment": "Bac+2 / Technicien Spécialisé (Grade 3, Échelle 9)",
+        "missing_information": "None"
+      },
+      "notifiedAt": "2026-10-16T12:49:07.190Z"
+    },
+    "ep-e09feb19-c9cb-4e4c-ba21-c689856b9f75": {
+      "id": "ep-e09feb19-c9cb-4e4c-ba21-c689856b9f75",
+      "url": "https://www.emploi-public.ma/ar/%D8%AA%D9%81%D8%A7%D8%B5%D9%8A%D9%84/%D8%A7%D9%84%D9%85%D8%A8%D8%A7%D8%B1%D9%8A%D8%A7%D8%AA/e09feb19-c9cb-4e4c-ba21-c689856b9f75",
+      "title": "أستاذ محاضر من الدرجة أ - سُلمْ 11 1 أيام متبقية جامعة القاضي عياض الإعلان 1 منصب آخر أجل لإيداع ملفات الترشيح : 17 أكتوبر 2026 تاريخ إجراء المباراة : 23 أكتوبر 2026",
+      "employer": "Administration Publique Marocaine",
+      "firstSeenAt": "2026-10-16T12:49:13.200Z",
+      "lastUpdatedAt": "2026-10-16T12:49:29.851Z",
+      "detailFetched": true,
+      "evaluated": true,
+      "notified": false,
+      "prefilterPassed": true,
+      "evaluation": {
+        "decision": "reject",
+        "confidence": 95,
+        "category": "irrelevant",
+        "reasons": "The posting is for a Lecturer grade A (scale 11) in Geology at University of Cadi Ayyad, which is a non‑IT teaching position. The spécialité (Géologie) does not contain informatique or related IT terms.",
+        "qualification_assessment": "Professeur conférencier grade A – teaching position in Geology",
+        "missing_information": "None"
+      }
+    },
+    "ep-e7d19bc5-3bd3-4ea8-9fec-7856e73e7a12": {
+      "id": "ep-e7d19bc5-3bd3-4ea8-9fec-7856e73e7a12",
+      "url": "https://www.emploi-public.ma/ar/%D8%AA%D9%81%D8%A7%D8%B5%D9%8A%D9%84/%D8%A7%D9%84%D9%85%D8%A8%D8%A7%D8%B1%D9%8A%D8%A7%D8%AA/e7d19bc5-3bd3-4ea8-9fec-7856e73e7a12",
+      "title": "أستاذ محاضر من الدرجة أ - سُلمْ 11 1 أيام متبقية جامعة القاضي عياض الإعلان 2 منصب آخر أجل لإيداع ملفات الترشيح : 17 أكتوبر 2026 تاريخ إجراء المباراة : 23 أكتوبر 2026",
+      "employer": "Administration Publique Marocaine",
+      "firstSeenAt": "2026-10-16T12:49:29.851Z",
+      "lastUpdatedAt": "2026-10-16T12:49:51.761Z",
+      "detailFetched": true,
+      "evaluated": true,
+      "notified": false,
+      "prefilterPassed": true,
+      "evaluation": {
+        "decision": "reject",
+        "confidence": 98,
+        "category": "irrelevant",
+        "reasons": "The position is a Professor Lecturer Grade A (Scale 11) in English Literature (Etudes anglaises : Littérature) at Université Cadi Ayyad / FLLA Safi. It is not an IT position; the specialization does not contain informatique or any IT-related term.",
+        "qualification_assessment": "Professor Lecturer Grade A, Scale 11 (typically Bac+5 / Doctorat level), field: English Literature / Humanities",
+        "missing_information": "None"
+      }
     }
   }
 }
