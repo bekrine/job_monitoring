@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "lastRunAt": "2026-10-19T15:07:36.325Z",
-  "totalJobsSeen": 41,
+  "lastRunAt": "2026-10-20T13:11:17.960Z",
+  "totalJobsSeen": 45,
   "jobs": {
     "ep-7c571fa5-42a7-46a6-8021-aed9ed9ec5f0": {
       "id": "ep-7c571fa5-42a7-46a6-8021-aed9ed9ec5f0",
@@ -9,7 +9,7 @@
       "title": "مباراة لتوظيف متصرف من الدرجة الثانية - سلم 11 وزارة الفلاحة والصيد البحري والتنمية القروية والمياه والغابات - قطاع الفلاحة الإعلان 38 مناصب آخر أجل لإيداع ملفات الترشيح : 30 أكتوبر 2026 - 16:30 تاريخ",
       "employer": "وزارة الفلاحة والصيد البحري والتنمية القروية",
       "firstSeenAt": "2026-10-12T19:31:24.806Z",
-      "lastUpdatedAt": "2026-10-19T15:07:31.450Z",
+      "lastUpdatedAt": "2026-10-20T13:07:17.021Z",
       "detailFetched": true,
       "evaluated": true,
       "notified": true,
@@ -334,7 +334,7 @@
       "title": "مباراة لتوظيف مساعد تقني من الدرجة الثانية وزارة التضامن والإدماج الاجتماعي والأسرة الإعلان الايداع الالكتروني 3 مناصب آخر أجل لإيداع ملفات الترشيح : 8 نونبر 2026 تاريخ إجراء المباراة : 15 نونبر 2026",
       "employer": "وزارة التضامن والإدماج الاجتماعي والأسرة الإعلان",
       "firstSeenAt": "2026-10-16T12:48:17.462Z",
-      "lastUpdatedAt": "2026-10-19T15:07:29.519Z",
+      "lastUpdatedAt": "2026-10-20T13:07:14.619Z",
       "detailFetched": true,
       "evaluated": true,
       "notified": false,
@@ -354,7 +354,7 @@
       "title": "مباراة لتوظيف تقني من الدرجة الثالثة - سلم 9 وزارة التضامن والإدماج الاجتماعي والأسرة الإعلان الايداع الالكتروني 1 منصب آخر أجل لإيداع ملفات الترشيح : 8 نونبر 2026 تاريخ إجراء المباراة : 15 نونبر 2026",
       "employer": "وزارة التضامن والإدماج الاجتماعي والأسرة الإعلان",
       "firstSeenAt": "2026-10-16T12:48:40.916Z",
-      "lastUpdatedAt": "2026-10-19T15:07:30.233Z",
+      "lastUpdatedAt": "2026-10-20T13:07:15.666Z",
       "detailFetched": true,
       "evaluated": true,
       "notified": true,
@@ -415,7 +415,7 @@
       "title": "مباراة لتوظيف التلاميذ الضباط - سلم 10 وزارة الداخلية -المديرية العامة للوقاية المدنية- الإعلان 50 مناصب آخر أجل لإيداع ملفات الترشيح : 31 أكتوبر 2026 تاريخ إجراء المباراة : 16 نونبر 2026",
       "employer": "وزارة الداخلية -المديرية العامة للوقاية المدنية-",
       "firstSeenAt": "2026-10-17T11:49:17.665Z",
-      "lastUpdatedAt": "2026-10-19T15:07:28.856Z",
+      "lastUpdatedAt": "2026-10-20T13:07:13.194Z",
       "detailFetched": true,
       "evaluated": true,
       "notified": false,
@@ -552,7 +552,7 @@
       "title": "مباراة لتوظيف متصرف من الدرجة الثانية - سلم 11 وزارة الداخلية -عمالة إقليم سطات- الإعلان 1 منصب آخر أجل لإيداع ملفات الترشيح : 2 نونبر 2026 - 16:30 تاريخ إجراء المباراة : 29 نونبر 2026",
       "employer": "وزارة الداخلية -عمالة إقليم سطات- الإعلان",
       "firstSeenAt": "2026-10-19T15:07:26.843Z",
-      "lastUpdatedAt": "2026-10-19T15:07:27.654Z",
+      "lastUpdatedAt": "2026-10-20T13:07:12.086Z",
       "detailFetched": true,
       "evaluated": false,
       "notified": false,
@@ -564,7 +564,7 @@
       "title": "مباراة لتوظيف متصرف من الدرجة الثانية - سلم 11 وزارة الداخلية -عمالة إقليم سطات- الإعلان 4 مناصب آخر أجل لإيداع ملفات الترشيح : 2 نونبر 2026 - 16:30 تاريخ إجراء المباراة : 29 نونبر 2026",
       "employer": "وزارة الداخلية -عمالة إقليم سطات- الإعلان",
       "firstSeenAt": "2026-10-19T15:07:27.654Z",
-      "lastUpdatedAt": "2026-10-19T15:07:28.274Z",
+      "lastUpdatedAt": "2026-10-20T13:07:12.647Z",
       "detailFetched": true,
       "evaluated": false,
       "notified": false,
@@ -617,6 +617,71 @@
       "evaluated": false,
       "notified": false,
       "prefilterPassed": false
+    },
+    "ep-7cf772aa-1a10-4769-8d24-bf2e5d55a471": {
+      "id": "ep-7cf772aa-1a10-4769-8d24-bf2e5d55a471",
+      "url": "https://www.emploi-public.ma/ar/%D8%AA%D9%81%D8%A7%D8%B5%D9%8A%D9%84/%D8%A7%D9%84%D9%85%D8%A8%D8%A7%D8%B1%D9%8A%D8%A7%D8%AA/7cf772aa-1a10-4769-8d24-bf2e5d55a471",
+      "title": "مباراة لتوظيف مهندس دولة من الدرجة الأولى - سلم 11 وزارة الداخلية -عمالة إقليم سطات- الإعلان الايداع الالكتروني 1 منصب آخر أجل لإيداع ملفات الترشيح : 2 نونبر 2026 تاريخ إجراء المباراة : 29 نونبر 2026",
+      "employer": "وزارة الداخلية -عمالة إقليم سطات- الإعلان",
+      "firstSeenAt": "2026-10-20T13:07:10.663Z",
+      "lastUpdatedAt": "2026-10-20T13:07:11.640Z",
+      "detailFetched": true,
+      "evaluated": false,
+      "notified": false,
+      "prefilterPassed": false
+    },
+    "ep-98bb6a45-de89-4080-8e03-d91f538653dc": {
+      "id": "ep-98bb6a45-de89-4080-8e03-d91f538653dc",
+      "url": "https://www.emploi-public.ma/ar/%D8%AA%D9%81%D8%A7%D8%B5%D9%8A%D9%84/%D8%A7%D9%84%D9%85%D8%A8%D8%A7%D8%B1%D9%8A%D8%A7%D8%AA/98bb6a45-de89-4080-8e03-d91f538653dc",
+      "title": "متصرف من الدرجة الثالثة - سُلمْ 10 1 أيام متبقية غرفة التجارة والصناعة والخدمات لجهة سوس ماسة الإعلان 1 منصب آخر أجل لإيداع ملفات الترشيح : 20 أكتوبر 2026",
+      "employer": "Administration Publique Marocaine",
+      "firstSeenAt": "2026-10-20T13:07:17.021Z",
+      "lastUpdatedAt": "2026-10-20T13:07:17.828Z",
+      "detailFetched": true,
+      "evaluated": false,
+      "notified": false,
+      "prefilterPassed": false
+    },
+    "ep-7c1d769e-bc86-4ed8-a640-9a04a11e9072": {
+      "id": "ep-7c1d769e-bc86-4ed8-a640-9a04a11e9072",
+      "url": "https://www.emploi-public.ma/ar/%D8%AA%D9%81%D8%A7%D8%B5%D9%8A%D9%84/%D8%A7%D9%84%D9%85%D8%A8%D8%A7%D8%B1%D9%8A%D8%A7%D8%AA/7c1d769e-bc86-4ed8-a640-9a04a11e9072",
+      "title": "أستاذ محاضر بكلية العلوم التطبيقية بورزازات informatique embarquée et génie électrique 1 أيام متبقية جامعة ابن زهر - أكادير الإعلان 1 منصب آخر أجل لإيداع ملفات الترشيح : 21 أكتوبر 2026 تاريخ إجراء الم",
+      "employer": "Administration Publique Marocaine",
+      "firstSeenAt": "2026-10-20T13:07:17.828Z",
+      "lastUpdatedAt": "2026-10-20T13:10:51.671Z",
+      "detailFetched": true,
+      "evaluated": true,
+      "notified": false,
+      "prefilterPassed": true,
+      "evaluation": {
+        "decision": "reject",
+        "confidence": 92,
+        "category": "irrelevant",
+        "reasons": "The position is an academic professorship (أستاذ محاضر) at a university, not a technical IT role. It does not match Category A (Technicien Spécialisé) which requires IT technician/developer profiles with Bac+2/DTS/DUT/BTS qualifications, nor Category B (General IT) which requires higher qualifications (Bac+3+, Bac+5, Engineer) for IT roles.",
+        "qualification_assessment": "Not a Technicien Spécialisé or general IT role; it's an academic teaching position requiring different qualifications (likely Master's degree or PhD in academia)",
+        "missing_information": "Specific technical responsibilities, required qualifications, and whether this is truly a technical IT position vs. academic role"
+      }
+    },
+    "ep-18ddfeee-6114-4dc5-b266-503297e24986": {
+      "id": "ep-18ddfeee-6114-4dc5-b266-503297e24986",
+      "url": "https://www.emploi-public.ma/ar/%D8%AA%D9%81%D8%A7%D8%B5%D9%8A%D9%84/%D8%A7%D9%84%D9%85%D8%A8%D8%A7%D8%B1%D9%8A%D8%A7%D8%AA/18ddfeee-6114-4dc5-b266-503297e24986",
+      "title": "أستاذ محاضر بكلية العلوم التطبيقية بورزازات informatique 1 أيام متبقية جامعة ابن زهر - أكادير الإعلان 3 منصب آخر أجل لإيداع ملفات الترشيح : 21 أكتوبر 2026 تاريخ إجراء المباراة : 27 أكتوبر 2026",
+      "employer": "Administration Publique Marocaine",
+      "firstSeenAt": "2026-10-20T13:10:51.671Z",
+      "lastUpdatedAt": "2026-10-20T13:11:17.960Z",
+      "detailFetched": true,
+      "evaluated": true,
+      "notified": true,
+      "prefilterPassed": true,
+      "evaluation": {
+        "decision": "match",
+        "confidence": 85,
+        "category": "it_general",
+        "reasons": "Poste d'ense-ignant en informatique à l'université (concours public de l'Administration Publique Marhaine), situé au Maroc. Le titre indique clairement 'informatique'. C'est un poste à hautes qualifications (professeur) nécessitant un doctorat.",
+        "qualification_assessment": "Doctorat (PhD) requis — niveau Bac+5 et au-delà, ce qui correspond à la catégorie B.",
+        "missing_information": "None"
+      },
+      "notifiedAt": "2026-10-20T13:11:17.960Z"
     }
   }
 }
