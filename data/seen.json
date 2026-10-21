@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "lastRunAt": "2026-10-20T13:11:17.960Z",
-  "totalJobsSeen": 45,
+  "lastRunAt": "2026-10-21T13:18:32.128Z",
+  "totalJobsSeen": 46,
   "jobs": {
     "ep-7c571fa5-42a7-46a6-8021-aed9ed9ec5f0": {
       "id": "ep-7c571fa5-42a7-46a6-8021-aed9ed9ec5f0",
@@ -9,7 +9,7 @@
       "title": "مباراة لتوظيف متصرف من الدرجة الثانية - سلم 11 وزارة الفلاحة والصيد البحري والتنمية القروية والمياه والغابات - قطاع الفلاحة الإعلان 38 مناصب آخر أجل لإيداع ملفات الترشيح : 30 أكتوبر 2026 - 16:30 تاريخ",
       "employer": "وزارة الفلاحة والصيد البحري والتنمية القروية",
       "firstSeenAt": "2026-10-12T19:31:24.806Z",
-      "lastUpdatedAt": "2026-10-20T13:07:17.021Z",
+      "lastUpdatedAt": "2026-10-21T13:18:30.965Z",
       "detailFetched": true,
       "evaluated": true,
       "notified": true,
@@ -334,11 +334,11 @@
       "title": "مباراة لتوظيف مساعد تقني من الدرجة الثانية وزارة التضامن والإدماج الاجتماعي والأسرة الإعلان الايداع الالكتروني 3 مناصب آخر أجل لإيداع ملفات الترشيح : 8 نونبر 2026 تاريخ إجراء المباراة : 15 نونبر 2026",
       "employer": "وزارة التضامن والإدماج الاجتماعي والأسرة الإعلان",
       "firstSeenAt": "2026-10-16T12:48:17.462Z",
-      "lastUpdatedAt": "2026-10-20T13:07:14.619Z",
+      "lastUpdatedAt": "2026-10-21T13:18:28.401Z",
       "detailFetched": true,
       "evaluated": true,
       "notified": false,
-      "prefilterPassed": true,
+      "prefilterPassed": false,
       "evaluation": {
         "decision": "reject",
         "confidence": 95,
@@ -354,7 +354,7 @@
       "title": "مباراة لتوظيف تقني من الدرجة الثالثة - سلم 9 وزارة التضامن والإدماج الاجتماعي والأسرة الإعلان الايداع الالكتروني 1 منصب آخر أجل لإيداع ملفات الترشيح : 8 نونبر 2026 تاريخ إجراء المباراة : 15 نونبر 2026",
       "employer": "وزارة التضامن والإدماج الاجتماعي والأسرة الإعلان",
       "firstSeenAt": "2026-10-16T12:48:40.916Z",
-      "lastUpdatedAt": "2026-10-20T13:07:15.666Z",
+      "lastUpdatedAt": "2026-10-21T13:18:29.784Z",
       "detailFetched": true,
       "evaluated": true,
       "notified": true,
@@ -415,11 +415,11 @@
       "title": "مباراة لتوظيف التلاميذ الضباط - سلم 10 وزارة الداخلية -المديرية العامة للوقاية المدنية- الإعلان 50 مناصب آخر أجل لإيداع ملفات الترشيح : 31 أكتوبر 2026 تاريخ إجراء المباراة : 16 نونبر 2026",
       "employer": "وزارة الداخلية -المديرية العامة للوقاية المدنية-",
       "firstSeenAt": "2026-10-17T11:49:17.665Z",
-      "lastUpdatedAt": "2026-10-20T13:07:13.194Z",
+      "lastUpdatedAt": "2026-10-21T13:18:26.908Z",
       "detailFetched": true,
       "evaluated": true,
       "notified": false,
-      "prefilterPassed": true,
+      "prefilterPassed": false,
       "evaluation": {
         "decision": "reject",
         "confidence": 95,
@@ -552,7 +552,7 @@
       "title": "مباراة لتوظيف متصرف من الدرجة الثانية - سلم 11 وزارة الداخلية -عمالة إقليم سطات- الإعلان 1 منصب آخر أجل لإيداع ملفات الترشيح : 2 نونبر 2026 - 16:30 تاريخ إجراء المباراة : 29 نونبر 2026",
       "employer": "وزارة الداخلية -عمالة إقليم سطات- الإعلان",
       "firstSeenAt": "2026-10-19T15:07:26.843Z",
-      "lastUpdatedAt": "2026-10-20T13:07:12.086Z",
+      "lastUpdatedAt": "2026-10-21T13:18:22.509Z",
       "detailFetched": true,
       "evaluated": false,
       "notified": false,
@@ -564,7 +564,7 @@
       "title": "مباراة لتوظيف متصرف من الدرجة الثانية - سلم 11 وزارة الداخلية -عمالة إقليم سطات- الإعلان 4 مناصب آخر أجل لإيداع ملفات الترشيح : 2 نونبر 2026 - 16:30 تاريخ إجراء المباراة : 29 نونبر 2026",
       "employer": "وزارة الداخلية -عمالة إقليم سطات- الإعلان",
       "firstSeenAt": "2026-10-19T15:07:27.654Z",
-      "lastUpdatedAt": "2026-10-20T13:07:12.647Z",
+      "lastUpdatedAt": "2026-10-21T13:18:22.850Z",
       "detailFetched": true,
       "evaluated": false,
       "notified": false,
@@ -624,7 +624,7 @@
       "title": "مباراة لتوظيف مهندس دولة من الدرجة الأولى - سلم 11 وزارة الداخلية -عمالة إقليم سطات- الإعلان الايداع الالكتروني 1 منصب آخر أجل لإيداع ملفات الترشيح : 2 نونبر 2026 تاريخ إجراء المباراة : 29 نونبر 2026",
       "employer": "وزارة الداخلية -عمالة إقليم سطات- الإعلان",
       "firstSeenAt": "2026-10-20T13:07:10.663Z",
-      "lastUpdatedAt": "2026-10-20T13:07:11.640Z",
+      "lastUpdatedAt": "2026-10-21T13:18:21.919Z",
       "detailFetched": true,
       "evaluated": false,
       "notified": false,
@@ -682,6 +682,20 @@
         "missing_information": "None"
       },
       "notifiedAt": "2026-10-20T13:11:17.960Z"
+    },
+    "ep-2fb165a9-1388-49c5-a6a4-85674202f96c": {
+      "id": "ep-2fb165a9-1388-49c5-a6a4-85674202f96c",
+      "url": "https://www.emploi-public.ma/ar/%D8%AA%D9%81%D8%A7%D8%B5%D9%8A%D9%84/%D8%A7%D9%84%D9%85%D8%A8%D8%A7%D8%B1%D9%8A%D8%A7%D8%AA/2fb165a9-1388-49c5-a6a4-85674202f96c",
+      "title": "متصرف من الدرجة الثانية تخصص Informatique بالمدرسة الوطنية العليا للذكاء الاصطناعي و علوم المعطيات بتارودانت 1 أيام متبقية جامعة ابن زهر - أكادير الإعلان 1 منصب آخر أجل لإيداع ملفات الترشيح : 22 أكتوب",
+      "employer": "Administration Publique Marocaine",
+      "firstSeenAt": "2026-10-21T13:18:30.965Z",
+      "lastUpdatedAt": "2026-10-21T13:18:32.128Z",
+      "detailFetched": true,
+      "evaluated": false,
+      "notified": false,
+      "prefilterPassed": true,
+      "evaluationError": "[AUTH_FAILURE] OpenRouter authentication failed (HTTP 401): API key expired.. Check OPENROUTER_API_KEY.",
+      "evaluationFailedAt": "2026-10-21T13:18:32.128Z"
     }
   }
 }
