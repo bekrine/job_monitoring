@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "lastRunAt": "2026-11-03T15:35:53.707Z",
-  "totalJobsSeen": 88,
+  "lastRunAt": "2026-11-04T15:50:11.612Z",
+  "totalJobsSeen": 90,
   "jobs": {
     "ep-7c571fa5-42a7-46a6-8021-aed9ed9ec5f0": {
       "id": "ep-7c571fa5-42a7-46a6-8021-aed9ed9ec5f0",
@@ -799,11 +799,11 @@
       "title": "مباراة لتوظيف تقني من الدرجة الثالثة (سلم 9) تخصص تكنولوجيا المعلومات والشبكات (DTS Informatique)",
       "employer": "وزارة الانتقال الرقمي وإصلاح الإدارة",
       "firstSeenAt": "2026-10-24T12:18:26.673Z",
-      "lastUpdatedAt": "2026-10-24T12:18:27.738Z",
-      "detailFetched": false,
+      "lastUpdatedAt": "2026-11-04T15:50:10.469Z",
+      "detailFetched": true,
       "evaluated": false,
       "notified": false,
-      "prefilterPassed": true,
+      "prefilterPassed": false,
       "evaluationError": "[AUTH_FAILURE] OpenRouter authentication failed (HTTP 401): API key expired.. Check OPENROUTER_API_KEY.",
       "evaluationFailedAt": "2026-10-24T12:18:27.738Z"
     },
@@ -1212,6 +1212,32 @@
       "prefilterPassed": true,
       "evaluationError": "[AUTH_FAILURE] OpenRouter authentication failed (HTTP 401): API key expired.. Check OPENROUTER_API_KEY.",
       "evaluationFailedAt": "2026-11-03T15:35:53.707Z"
+    },
+    "sample-ingenieur-it-02": {
+      "id": "sample-ingenieur-it-02",
+      "url": "https://www.emploi-public.ma/ar/concours/ingenieur-etat-cloud-2026",
+      "title": "مباراة لتوظيف مهندس دولة من الدرجة الأولى تخصص génie logiciel et cloud",
+      "employer": "الوكالة الوطنية لتقنين المواصلات (ANRT)",
+      "firstSeenAt": "2026-11-04T15:50:10.469Z",
+      "lastUpdatedAt": "2026-11-04T15:50:10.798Z",
+      "detailFetched": true,
+      "evaluated": false,
+      "notified": false,
+      "prefilterPassed": false
+    },
+    "sample-private-developer-03": {
+      "id": "sample-private-developer-03",
+      "url": "https://www.rekrute.com/offre-emploi-fullstack-casablanca-99881.html",
+      "title": "Fullstack JavaScript Developer (Node.js / React) - Casablanca",
+      "employer": "Morocco FinTech Solutions",
+      "firstSeenAt": "2026-11-04T15:50:10.798Z",
+      "lastUpdatedAt": "2026-11-04T15:50:11.612Z",
+      "detailFetched": true,
+      "evaluated": false,
+      "notified": false,
+      "prefilterPassed": true,
+      "evaluationError": "[AUTH_FAILURE] OpenRouter authentication failed (HTTP 401): API key expired.. Check OPENROUTER_API_KEY.",
+      "evaluationFailedAt": "2026-11-04T15:50:11.612Z"
     }
   }
 }
