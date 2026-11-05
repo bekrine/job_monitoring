@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "lastRunAt": "2026-11-04T15:50:11.612Z",
-  "totalJobsSeen": 90,
+  "lastRunAt": "2026-11-05T15:55:48.367Z",
+  "totalJobsSeen": 101,
   "jobs": {
     "ep-7c571fa5-42a7-46a6-8021-aed9ed9ec5f0": {
       "id": "ep-7c571fa5-42a7-46a6-8021-aed9ed9ec5f0",
@@ -1238,6 +1238,140 @@
       "prefilterPassed": true,
       "evaluationError": "[AUTH_FAILURE] OpenRouter authentication failed (HTTP 401): API key expired.. Check OPENROUTER_API_KEY.",
       "evaluationFailedAt": "2026-11-04T15:50:11.612Z"
+    },
+    "ep-e0775437-60f2-4958-9306-7bfe8a1524f4": {
+      "id": "ep-e0775437-60f2-4958-9306-7bfe8a1524f4",
+      "url": "https://www.emploi-public.ma/ar/%D8%AA%D9%81%D8%A7%D8%B5%D9%8A%D9%84/%D8%A7%D9%84%D9%85%D8%A8%D8%A7%D8%B1%D9%8A%D8%A7%D8%AA/e0775437-60f2-4958-9306-7bfe8a1524f4",
+      "title": "مباراة لتوظيف ممرض من الدرجة الأولى - سلم 10 وزارة الصحة والحماية الاجتماعية الإعلان 550 مناصب آخر أجل لإيداع ملفات الترشيح : 19 نونبر 2026 - 16:30 تاريخ إجراء المباراة : 22 نونبر 2026",
+      "employer": "وزارة الصحة والحماية الاجتماعية الإعلان 550",
+      "firstSeenAt": "2026-11-05T15:53:47.523Z",
+      "lastUpdatedAt": "2026-11-05T15:53:48.143Z",
+      "detailFetched": true,
+      "evaluated": false,
+      "notified": false,
+      "prefilterPassed": false
+    },
+    "ep-90fbe2e0-329d-4898-b339-5d4e0e85f5f8": {
+      "id": "ep-90fbe2e0-329d-4898-b339-5d4e0e85f5f8",
+      "url": "https://www.emploi-public.ma/ar/%D8%AA%D9%81%D8%A7%D8%B5%D9%8A%D9%84/%D8%A7%D9%84%D9%85%D8%A8%D8%A7%D8%B1%D9%8A%D8%A7%D8%AA/90fbe2e0-329d-4898-b339-5d4e0e85f5f8",
+      "title": "مباراة لتوظيف ممرض من الدرجة الأولى - سلم 10 وزارة الصحة والحماية الاجتماعية الإعلان 100 مناصب آخر أجل لإيداع ملفات الترشيح : 19 نونبر 2026 - 16:30 تاريخ إجراء المباراة : 22 نونبر 2026",
+      "employer": "وزارة الصحة والحماية الاجتماعية الإعلان 100",
+      "firstSeenAt": "2026-11-05T15:53:48.143Z",
+      "lastUpdatedAt": "2026-11-05T15:54:01.294Z",
+      "detailFetched": true,
+      "evaluated": false,
+      "notified": false,
+      "prefilterPassed": false
+    },
+    "ep-402b2997-0464-4c79-93c7-c4a918d05b34": {
+      "id": "ep-402b2997-0464-4c79-93c7-c4a918d05b34",
+      "url": "https://www.emploi-public.ma/ar/%D8%AA%D9%81%D8%A7%D8%B5%D9%8A%D9%84/%D8%A7%D9%84%D9%85%D8%A8%D8%A7%D8%B1%D9%8A%D8%A7%D8%AA/402b2997-0464-4c79-93c7-c4a918d05b34",
+      "title": "مباراة لتوظيف ممرض من الدرجة الأولى - سلم 10 وزارة الصحة والحماية الاجتماعية الإعلان 300 مناصب آخر أجل لإيداع ملفات الترشيح : 19 نونبر 2026 - 16:30 تاريخ إجراء المباراة : 22 نونبر 2026",
+      "employer": "وزارة الصحة والحماية الاجتماعية الإعلان 300",
+      "firstSeenAt": "2026-11-05T15:54:01.294Z",
+      "lastUpdatedAt": "2026-11-05T15:54:03.392Z",
+      "detailFetched": true,
+      "evaluated": false,
+      "notified": false,
+      "prefilterPassed": false
+    },
+    "ep-04a91581-186c-41d8-82e4-3cea07204037": {
+      "id": "ep-04a91581-186c-41d8-82e4-3cea07204037",
+      "url": "https://www.emploi-public.ma/ar/%D8%AA%D9%81%D8%A7%D8%B5%D9%8A%D9%84/%D8%A7%D9%84%D9%85%D8%A8%D8%A7%D8%B1%D9%8A%D8%A7%D8%AA/04a91581-186c-41d8-82e4-3cea07204037",
+      "title": "مباراة لتوظيف ممرض من الدرجة الأولى - سلم 10 وزارة الصحة والحماية الاجتماعية الإعلان 594 مناصب آخر أجل لإيداع ملفات الترشيح : 19 نونبر 2026 - 16:30 تاريخ إجراء المباراة : 22 نونبر 2026",
+      "employer": "وزارة الصحة والحماية الاجتماعية الإعلان 594",
+      "firstSeenAt": "2026-11-05T15:54:03.392Z",
+      "lastUpdatedAt": "2026-11-05T15:54:04.647Z",
+      "detailFetched": true,
+      "evaluated": false,
+      "notified": false,
+      "prefilterPassed": false
+    },
+    "ep-34f82ed2-c3fa-4496-a8e3-3a1159e4adf3": {
+      "id": "ep-34f82ed2-c3fa-4496-a8e3-3a1159e4adf3",
+      "url": "https://www.emploi-public.ma/ar/%D8%AA%D9%81%D8%A7%D8%B5%D9%8A%D9%84/%D8%A7%D9%84%D9%85%D8%A8%D8%A7%D8%B1%D9%8A%D8%A7%D8%AA/34f82ed2-c3fa-4496-a8e3-3a1159e4adf3",
+      "title": "مباراة لتوظيف ممرض من الدرجة الأولى - سلم 10 وزارة الصحة والحماية الاجتماعية الإعلان 500 مناصب آخر أجل لإيداع ملفات الترشيح : 19 نونبر 2026 - 16:30 تاريخ إجراء المباراة : 22 نونبر 2026",
+      "employer": "وزارة الصحة والحماية الاجتماعية الإعلان 500",
+      "firstSeenAt": "2026-11-05T15:54:04.647Z",
+      "lastUpdatedAt": "2026-11-05T15:54:26.721Z",
+      "detailFetched": true,
+      "evaluated": false,
+      "notified": false,
+      "prefilterPassed": false
+    },
+    "ep-5f66d5b3-6fe7-4e8a-8258-014f3f3022cf": {
+      "id": "ep-5f66d5b3-6fe7-4e8a-8258-014f3f3022cf",
+      "url": "https://www.emploi-public.ma/ar/%D8%AA%D9%81%D8%A7%D8%B5%D9%8A%D9%84/%D8%A7%D9%84%D9%85%D8%A8%D8%A7%D8%B1%D9%8A%D8%A7%D8%AA/5f66d5b3-6fe7-4e8a-8258-014f3f3022cf",
+      "title": "مباراة لتوظيف ممرض من الدرجة الأولى - سلم 10 وزارة الصحة والحماية الاجتماعية الإعلان 50 مناصب آخر أجل لإيداع ملفات الترشيح : 19 نونبر 2026 - 16:30 تاريخ إجراء المباراة : 22 نونبر 2026",
+      "employer": "وزارة الصحة والحماية الاجتماعية الإعلان 50",
+      "firstSeenAt": "2026-11-05T15:54:26.721Z",
+      "lastUpdatedAt": "2026-11-05T15:54:28.756Z",
+      "detailFetched": true,
+      "evaluated": false,
+      "notified": false,
+      "prefilterPassed": false
+    },
+    "ep-089b0b6f-62e2-4acf-bf7c-42d661636619": {
+      "id": "ep-089b0b6f-62e2-4acf-bf7c-42d661636619",
+      "url": "https://www.emploi-public.ma/ar/%D8%AA%D9%81%D8%A7%D8%B5%D9%8A%D9%84/%D8%A7%D9%84%D9%85%D8%A8%D8%A7%D8%B1%D9%8A%D8%A7%D8%AA/089b0b6f-62e2-4acf-bf7c-42d661636619",
+      "title": "مباراة لتوظيف أستاذ التعليم الثانوي التأهيلي من الدرجة الثانية - سلم 10 وزارة التربية الوطنية والتعليم الأولي والتكوين المهني والتأهيل - قطاع التربية الوطنية الإعلان 2060 مناصب آخر أجل لإيداع ملفات ال",
+      "employer": "وزارة التربية الوطنية والتعليم الأولي والتكوين",
+      "firstSeenAt": "2026-11-05T15:54:28.757Z",
+      "lastUpdatedAt": "2026-11-05T15:55:03.755Z",
+      "detailFetched": true,
+      "evaluated": false,
+      "notified": false,
+      "prefilterPassed": false
+    },
+    "ep-94547633-d587-46c5-bfc1-d1c343a0413d": {
+      "id": "ep-94547633-d587-46c5-bfc1-d1c343a0413d",
+      "url": "https://www.emploi-public.ma/ar/%D8%AA%D9%81%D8%A7%D8%B5%D9%8A%D9%84/%D8%A7%D9%84%D9%85%D8%A8%D8%A7%D8%B1%D9%8A%D8%A7%D8%AA/94547633-d587-46c5-bfc1-d1c343a0413d",
+      "title": "مباراة لتوظيف أستاذ التعليم الثانوي الإعدادي من الدرجة الثانية - سلم 10 وزارة التربية الوطنية والتعليم الأولي والتكوين المهني والتأهيل - قطاع التربية الوطنية الإعلان 8870 مناصب آخر أجل لإيداع ملفات ال",
+      "employer": "وزارة التربية الوطنية والتعليم الأولي والتكوين",
+      "firstSeenAt": "2026-11-05T15:55:03.756Z",
+      "lastUpdatedAt": "2026-11-05T15:55:05.388Z",
+      "detailFetched": true,
+      "evaluated": false,
+      "notified": false,
+      "prefilterPassed": false
+    },
+    "ep-f773dd7f-be02-42b7-a9d8-c941fef7d31e": {
+      "id": "ep-f773dd7f-be02-42b7-a9d8-c941fef7d31e",
+      "url": "https://www.emploi-public.ma/ar/%D8%AA%D9%81%D8%A7%D8%B5%D9%8A%D9%84/%D8%A7%D9%84%D9%85%D8%A8%D8%A7%D8%B1%D9%8A%D8%A7%D8%AA/f773dd7f-be02-42b7-a9d8-c941fef7d31e",
+      "title": "مباراة لتوظيف أستاذ التعليم الإبتدائي من الدرجة الثانية - سلم 10 وزارة التربية الوطنية والتعليم الأولي والتكوين المهني والتأهيل - قطاع التربية الوطنية الإعلان 7023 مناصب آخر أجل لإيداع ملفات الترشيح :",
+      "employer": "وزارة التربية الوطنية والتعليم الأولي والتكوين",
+      "firstSeenAt": "2026-11-05T15:55:05.388Z",
+      "lastUpdatedAt": "2026-11-05T15:55:06.668Z",
+      "detailFetched": true,
+      "evaluated": false,
+      "notified": false,
+      "prefilterPassed": false
+    },
+    "ep-66fcbb67-e370-4185-a72b-13bc237ff54d": {
+      "id": "ep-66fcbb67-e370-4185-a72b-13bc237ff54d",
+      "url": "https://www.emploi-public.ma/ar/%D8%AA%D9%81%D8%A7%D8%B5%D9%8A%D9%84/%D8%A7%D9%84%D9%85%D8%A8%D8%A7%D8%B1%D9%8A%D8%A7%D8%AA/66fcbb67-e370-4185-a72b-13bc237ff54d",
+      "title": "مهندس دولة من الدرجة الأولى - سُلمْ 11 1 أيام متبقية المدرسة الوطنية للإدارة الإعلان الايداع الالكتروني 1 منصب آخر أجل لإيداع ملفات الترشيح : 5 نونبر 2026 تاريخ إجراء المباراة : 28 نونبر 2026",
+      "employer": "Administration Publique Marocaine",
+      "firstSeenAt": "2026-11-05T15:55:06.668Z",
+      "lastUpdatedAt": "2026-11-05T15:55:37.570Z",
+      "detailFetched": true,
+      "evaluated": false,
+      "notified": false,
+      "prefilterPassed": false
+    },
+    "ep-231dfedf-0959-4ac8-b1c6-70d8169c50cb": {
+      "id": "ep-231dfedf-0959-4ac8-b1c6-70d8169c50cb",
+      "url": "https://www.emploi-public.ma/ar/%D8%AA%D9%81%D8%A7%D8%B5%D9%8A%D9%84/%D8%A7%D9%84%D9%85%D8%A8%D8%A7%D8%B1%D9%8A%D8%A7%D8%AA/231dfedf-0959-4ac8-b1c6-70d8169c50cb",
+      "title": "مهندس دولة من الدرجة الأولى - سُلمْ 11 1 أيام متبقية الوكالة الوطنية لإنعاش الشغل والكفاءات الإعلان الايداع الالكتروني 3 منصب آخر أجل لإيداع ملفات الترشيح : 5 نونبر 2026 تاريخ إجراء المباراة : 21 نونب",
+      "employer": "Administration Publique Marocaine",
+      "firstSeenAt": "2026-11-05T15:55:37.570Z",
+      "lastUpdatedAt": "2026-11-05T15:55:48.367Z",
+      "detailFetched": true,
+      "evaluated": false,
+      "notified": false,
+      "prefilterPassed": true,
+      "evaluationError": "[AUTH_FAILURE] OpenRouter authentication failed (HTTP 401): API key expired.. Check OPENROUTER_API_KEY.",
+      "evaluationFailedAt": "2026-11-05T15:55:48.367Z"
     }
   }
 }
