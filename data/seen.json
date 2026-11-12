@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "lastRunAt": "2026-11-11T15:43:23.781Z",
-  "totalJobsSeen": 125,
+  "lastRunAt": "2026-11-12T16:26:14.276Z",
+  "totalJobsSeen": 127,
   "jobs": {
     "ep-7c571fa5-42a7-46a6-8021-aed9ed9ec5f0": {
       "id": "ep-7c571fa5-42a7-46a6-8021-aed9ed9ec5f0",
@@ -1662,6 +1662,32 @@
       "evaluated": false,
       "notified": false,
       "prefilterPassed": false
+    },
+    "ep-b2542f15-9180-4680-9a40-56cab838599c": {
+      "id": "ep-b2542f15-9180-4680-9a40-56cab838599c",
+      "url": "https://www.emploi-public.ma/ar/%D8%AA%D9%81%D8%A7%D8%B5%D9%8A%D9%84/%D8%A7%D9%84%D9%85%D8%A8%D8%A7%D8%B1%D9%8A%D8%A7%D8%AA/b2542f15-9180-4680-9a40-56cab838599c",
+      "title": "مباراة لتوظيف قائد السجون مساعد من الدرجة الأولى المندوبية العامة لإدارة السجون وإعادة الإدماج الإعلان 28 مناصب آخر أجل لإيداع ملفات الترشيح : 26 نونبر 2026 - 16:30 تاريخ إجراء المباراة : 6 دجنبر 2026",
+      "employer": "Administration Publique Marocaine",
+      "firstSeenAt": "2026-11-12T16:26:05.169Z",
+      "lastUpdatedAt": "2026-11-12T16:26:12.427Z",
+      "detailFetched": true,
+      "evaluated": false,
+      "notified": false,
+      "prefilterPassed": false
+    },
+    "ep-cc2bd7ff-97cf-4de3-9665-4e7c05c3c825": {
+      "id": "ep-cc2bd7ff-97cf-4de3-9665-4e7c05c3c825",
+      "url": "https://www.emploi-public.ma/ar/%D8%AA%D9%81%D8%A7%D8%B5%D9%8A%D9%84/%D8%A7%D9%84%D9%85%D8%A8%D8%A7%D8%B1%D9%8A%D8%A7%D8%AA/cc2bd7ff-97cf-4de3-9665-4e7c05c3c825",
+      "title": "مباراة لتوظيف مراقب السجون رئيس من الدرجة الثانية المندوبية العامة لإدارة السجون وإعادة الإدماج الإعلان 200 مناصب آخر أجل لإيداع ملفات الترشيح : 26 نونبر 2026 - 16:30 تاريخ إجراء المباراة : 6 دجنبر 20",
+      "employer": "Administration Publique Marocaine",
+      "firstSeenAt": "2026-11-12T16:26:12.428Z",
+      "lastUpdatedAt": "2026-11-12T16:26:14.276Z",
+      "detailFetched": true,
+      "evaluated": false,
+      "notified": false,
+      "prefilterPassed": true,
+      "evaluationError": "[AUTH_FAILURE] OpenRouter authentication failed (HTTP 401): API key expired.. Check OPENROUTER_API_KEY.",
+      "evaluationFailedAt": "2026-11-12T16:26:14.276Z"
     }
   }
 }
