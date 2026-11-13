@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "lastRunAt": "2026-11-12T16:26:14.276Z",
-  "totalJobsSeen": 127,
+  "lastRunAt": "2026-11-13T15:45:44.773Z",
+  "totalJobsSeen": 128,
   "jobs": {
     "ep-7c571fa5-42a7-46a6-8021-aed9ed9ec5f0": {
       "id": "ep-7c571fa5-42a7-46a6-8021-aed9ed9ec5f0",
@@ -1688,6 +1688,20 @@
       "prefilterPassed": true,
       "evaluationError": "[AUTH_FAILURE] OpenRouter authentication failed (HTTP 401): API key expired.. Check OPENROUTER_API_KEY.",
       "evaluationFailedAt": "2026-11-12T16:26:14.276Z"
+    },
+    "ep-bc216516-0478-4fb6-a857-a114988f6cb3": {
+      "id": "ep-bc216516-0478-4fb6-a857-a114988f6cb3",
+      "url": "https://www.emploi-public.ma/ar/%D8%AA%D9%81%D8%A7%D8%B5%D9%8A%D9%84/%D8%A7%D9%84%D9%85%D8%A8%D8%A7%D8%B1%D9%8A%D8%A7%D8%AA/bc216516-0478-4fb6-a857-a114988f6cb3",
+      "title": "مباراة لتوظيف أستاذ محاضر من الدرجة أ - سلم 11 المندوبية السامية للتخطيط الإعلان 3 مناصب آخر أجل لإيداع ملفات الترشيح : 4 دجنبر 2026 - 16:30 تاريخ إجراء المباراة : 17 دجنبر 2026",
+      "employer": "Administration Publique Marocaine",
+      "firstSeenAt": "2026-11-13T15:45:42.558Z",
+      "lastUpdatedAt": "2026-11-13T15:45:44.773Z",
+      "detailFetched": true,
+      "evaluated": false,
+      "notified": false,
+      "prefilterPassed": true,
+      "evaluationError": "[AUTH_FAILURE] OpenRouter authentication failed (HTTP 401): API key expired.. Check OPENROUTER_API_KEY.",
+      "evaluationFailedAt": "2026-11-13T15:45:44.773Z"
     }
   }
 }
